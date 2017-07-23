@@ -1,0 +1,23 @@
+// variables
+@import "_variables.scss";
+@import "_mixin.scss";
+
+// theme
+@import "_detail-sidebar.scss";
+@import "_detail-article.scss";
+
+.wrap {
+    padding: 0 $gutter-m;
+}
+
+.post-thumbnail a {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+@media screen and (min-width: $screen-sm) {
+    .wrap {
+        padding: 0 $gutter-d;
+    }
+}

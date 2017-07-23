@@ -1,0 +1,35 @@
+.kp_form {
+  .form-group {
+    display: flex;
+    align-items: center;
+
+    p {
+      width: 150px;
+
+      &::after {
+        content: ":";
+        margin-left: 3px;
+      }
+    }
+
+    label {
+      margin-left: 30px;
+    }
+
+    &.datepicker label:first-of-type:after {
+      content: "-";
+      margin-left: 30px;
+    }
+  }
+
+  .gmap label {
+    padding: 10px 0;
+    display: inline-block;
+    width: 100%;
+    line-height: 30px;
+  }
+
+  .gmap label input {
+      width: calc(100% - 300px);
+  }
+}
