@@ -1,3 +1,4 @@
+// post editor, custom meta box tempat wisata
 .kp_form {
   .form-group {
     display: flex;
@@ -32,4 +33,45 @@
   .gmap label input {
       width: calc(100% - 300px);
   }
+}
+
+
+// list quick editor
+#wpbody-content .inline-edit-row-post.quick-edit-row {
+    .colspanchange {
+        position: relative;
+    }
+
+    .inline-edit-col-center {
+        width: 100%;
+        float: none;
+
+        .inline-edit-col {
+            display: flex;
+        }
+
+        .inline-edit-col ul {
+            width: 100%;
+        }
+
+        span {
+            transform: rotate(293deg);
+            width: 300px;
+            height: 0px;
+            display: flex;
+            position: relative;
+            left: 0px;
+            top: 23px;
+            margin: 0;
+            padding: 0;
+            font-size: 120%;
+        }
+    }
+
+    .inline-edit-col-right {
+        position: absolute;
+        top: 30px;
+        right: 0;
+        width: 55%;
+    }
 }

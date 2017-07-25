@@ -1,5 +1,45 @@
-.article-list-item {
-    p:last-of-type {
-        margin-bottom: 0;
+.list-view {
+    .article-list-item p {
+        margin: 0;
+    }
+
+    .article-list-item .read-more {
+        margin-top: 0.8em;
+        text-align: right;
+    }
+}
+
+@media screen and (min-width: $screen-sm) {
+    .list-view {
+        .post-thumbnail {
+            width: 10em;
+            float: left;
+            margin: 5px $padding $gutter-m 0;
+        }
+
+        .post-thumbnail a {
+            box-shadow: $box-shadow;
+            transition: box-shadow 0.15s ease-in-out;
+
+            &:hover {
+                box-shadow: 0 3px 0px 0 rgba(34, 34, 34, 0.3);
+            }
+
+            &:hover img {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: $screen-md) {
+    .list-view {
+        .entry-header {
+            width: 100%;
+        }
+
+        .entry-content {
+            width: 100%;
+        }
     }
 }

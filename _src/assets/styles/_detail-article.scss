@@ -1,5 +1,4 @@
 .aj-cp article {
-
     a {
         color: $primary-background-color;
 
@@ -18,6 +17,10 @@
         }
     }
 
+    time:first-child:before {
+        display: none;
+    }
+
     time.updated {
         display: inline-block !important;
 
@@ -28,8 +31,55 @@
     }
 }
 
+.relasi_tempat_wisata {
+    .tile-container {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 $gutter-m * -1;
+    }
+
+    .tile {
+        width: 100%;
+        box-shadow: $box-shadow;
+        padding: $gutter-d;
+        margin: 0 $gutter-m $gutter-d;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .tile > * {
+        margin: 0;
+    }
+
+    .tile em {
+        margin-bottom: $padding;
+    }
+
+    .tile .lead_img {
+        width: calc(100% + #{$gutter-d * 2});
+        margin-left: $gutter-d * -1;
+        margin-top: $gutter-d * -1;
+        box-shadow: none;
+
+        &:hover,
+        &:hover img {
+            box-shadow: none;
+        }
+    }
+
+    .read_more {
+        margin-top: auto;
+        padding-top: $gutter-d;
+        text-align: right;
+    }
+
+    .read_more a {
+        box-shadow: none;
+    }
+}
+
 @media screen and (min-width: $screen-sm) {
-    // detail page
     .aj-cp article {
         display: flex;
         flex-wrap: wrap;
@@ -56,19 +106,14 @@
         }
     }
 
-    // list view / archive
-    .list-view {
-        .post-thumbnail {
-            width: 10em;
-            float: left;
-            box-shadow: $box-shadow;
-            margin: 5px $padding $gutter-m 0;
+    .relasi_tempat_wisata {
+        .tile {
+            width: calc(50% - 2em);
         }
     }
 }
 
 @media screen and (min-width: $screen-md) {
-    // detail page
     .aj-cp article {
         .sidebar {
             width: 21em;
@@ -80,32 +125,6 @@
 
         .entry-content {
             width: calc(100% - #{21em + $gutter-d});
-        }
-    }
-
-    // list view / archive
-    .list-view {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: flex-start;
-
-        .entry-header {
-            width: 100%;
-        }
-
-        .post-thumbnail {
-            float: none;
-            margin: 5px 0 0;
-        }
-
-        .entry-content {
-            width: 100%;
-        }
-
-        &.has-post-thumbnail .entry-content {
-            width: calc(100% - #{$padding + 10em});
-            margin: 0;
         }
     }
 }
