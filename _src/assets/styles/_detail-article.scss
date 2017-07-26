@@ -48,7 +48,13 @@
         overflow: hidden;
     }
 
-    .tile > * {
+    .tile .detail {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .tile h3,
+    .tile p {
         margin: 0;
     }
 
@@ -68,7 +74,7 @@
         }
     }
 
-    .read_more {
+    .tile .read_more {
         margin-top: auto;
         padding-top: $gutter-d;
         text-align: right;
@@ -109,6 +115,46 @@
     .relasi_tempat_wisata {
         .tile {
             width: calc(50% - 2em);
+        }
+
+        .tile:nth-last-child(1):nth-child(odd) {
+            flex-direction: row;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0;
+            position: relative;
+
+            .lead_img {
+                width: 40%;
+                height: 100%;
+                margin: 0;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .lead_img img {
+                max-width: none;
+                min-height: 100%;
+                height: 100%;
+                width: 100%;
+            }
+
+            .detail {
+                width: calc(60% - 4em);
+                margin-right: 2em;
+            }
+
+            .read_more {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                background: #fff;
+                padding: 1em;
+            }
         }
     }
 }
