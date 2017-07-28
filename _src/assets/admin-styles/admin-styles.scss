@@ -1,11 +1,17 @@
+@import "../styles/_variables.scss";
+
 // post editor, custom meta box tempat wisata
 .kp_form {
   .form-group {
     display: flex;
     align-items: center;
 
+    &.tall {
+        align-items: flex-start;
+    }
+
     p {
-      width: 150px;
+      flex: 0 0 100px;
 
       &::after {
         content: ":";
@@ -15,6 +21,18 @@
 
     label {
       margin-left: 30px;
+    }
+
+    .devide {
+        display: flex;
+        flex-wrap: wrap;
+        padding-top: 1em;
+        width: 100%;
+    }
+
+    .devide label {
+        width: calc(100% / 3 - 30px);
+        line-height: 25px;
     }
 
     &.datepicker label:first-of-type:after {
@@ -73,5 +91,25 @@
         top: 30px;
         right: 0;
         width: 55%;
+    }
+}
+
+@media screen and (max-width: 782px) {
+    .kp_form {
+        .form-group {
+            label {
+              line-height: 40px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $screen-md) {
+    .kp_form {
+        .form-group {
+            .devide label {
+                width: calc(100% / 2 - 30px);
+            }
+        }
     }
 }
