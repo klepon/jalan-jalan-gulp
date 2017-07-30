@@ -31,6 +31,7 @@
         width: 100%;
         height: 150px;
         background-position: center;
+        box-shadow: none;
     }
 
     .gmap .link-desc {
@@ -46,6 +47,26 @@
         margin: 0 0 0 $padding / 4;
         width: 1.2em;
         color: $primary-background-color;
+    }
+
+    .star {
+        max-width: 100%;
+    }
+
+    .star span {
+        height: 2.4em;
+        width: 300px;
+        max-width: 100%;
+
+        &::before {
+            height: 2.4em;
+        }
+    }
+
+    .star span .icon {
+        color: gold;
+        width: 20%;
+        margin: 0;
     }
 }
 

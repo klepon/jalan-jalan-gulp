@@ -10,32 +10,32 @@ $white: #fff;
 $dark: #333;
 
 /* default */
-$default-solid-color: #333;
-$default-solid-background-color: #fff;
+$default-solid-color: $dark;
+$default-solid-background-color: $white;
 $default-solid-border-color: #ccc;
 
 /* blue */
-$primary-color: #fff;
+$primary-color: $white;
 $primary-background-color: #337ab7;
 $primary-border-color: #2e6da4;
 
 /* green */
-$success-solid-color: #fff;
+$success-solid-color: $white;
 $success-solid-background-color: #5cb85c;
 $success-solid-border-color: #4cae4c;
 
 /* light blue */
-$info-solid-color: #fff;
+$info-solid-color: $white;
 $info-solid-background-color: #5bc0de;
 $info-solid-border-color: #46b8da;
 
 /* orange */
-$warning-solid-color: #fff;
+$warning-solid-color: $white;
 $warning-solid-background-color: #f0ad4e;
 $warning-solid-border-color: #eea236;
 
 /* merah */
-$danger-solid-color: #fff;
+$danger-solid-color: $white;
 $danger-solid-background-color: #d9534f;
 $danger-solid-border-color: #d43f3a;
 

@@ -1,12 +1,4 @@
 .aj-cp article {
-    a {
-        color: $primary-background-color;
-
-        &:hover {
-            color: $primary-border-color;
-            text-decoration: underline;
-        }
-    }
 
     .published a {
         color: $dark;
@@ -145,15 +137,20 @@
 
             .detail {
                 width: calc(60% - 4em);
-                margin-right: 2em;
+                margin: 1em 2em;
             }
 
             .read_more {
-                position: absolute;
-                left: 0;
-                bottom: 0;
                 background: #fff;
                 padding: 1em;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+            }
+
+            .read_more:not(.no_thumb) {
+                left: 0;
+                right: auto;
             }
         }
     }

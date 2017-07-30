@@ -8,6 +8,11 @@ if( appDom !== null ) {
   ReactDOM.render(<App />, appDom);
 }
 
-// import other no react js
-// import { mainScript } from '../scripts/scripts.js';
-// mainScript();
+// import other non react js
+import { consoleFancy } from '../scripts/console_fancy.js';
+consoleFancy();
+
+import { mobileFixNav } from '../scripts/mobile_nav.js';
+jQuery(document).ready(function(){
+    mobileFixNav();
+});
