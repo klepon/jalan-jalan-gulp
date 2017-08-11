@@ -1,0 +1,183 @@
+.full_width_content .content-area {
+    max-width: 100% !important;
+}
+
+.pagination {
+    .current {
+        background: $primary-background-color;
+        color: $primary-color;
+        cursor: default;
+
+        &:hover {
+            box-shadow: 1px 1px 4px -1px rgba(0,0,0,.3);
+        }
+    }
+
+    button {
+        background: none;
+        color: #222;
+        box-shadow: 1px 1px 4px -1px rgba(0,0,0,.3);
+        padding: 5px;
+        width: 40px;
+        height: 40px;
+        margin: 0 7px;
+
+        &:hover {
+            box-shadow: 2px 2px 7px -1px rgba(0,0,0,.3);
+        }
+    }
+}
+
+.filter-listing {
+    .tile-container {
+        .tile {
+            margin: 0 10px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lead_img {
+            display: block;
+            overflow: hidden;
+            position: relative;
+            height: 100vw;
+            max-height: 230px;
+            margin-bottom: 10px;
+        }
+
+        .lead_img img {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail h3 {
+            font-size: 1.2em;
+        }
+
+        .detail small {
+            margin-bottom: 10px;
+            opacity: 0.7
+        }
+
+        .detail p {
+            margin-bottom: 10px;
+        }
+    }
+}
+
+@media screen and (max-width: $screen-sm - 0.05) {
+    .filter-listing {
+        .tile-container {
+            .lead_img {
+
+                &,
+                &:hover {
+                    box-shadow: none;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: $screen-sm) {
+    .filter-listing {
+        .tile-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+
+            .tile {
+                width: calc(33% - 20px);
+                display: flex;
+                flex-direction: column;
+                box-shadow: 2px 2px 7px -2px rgba(0,0,0,.3);
+                margin: 0 10px 40px;
+            }
+
+            .lead_img {
+                height: calc(100vw / 5 - 10px);
+                max-height: 190px;
+                flex-shrink: 0;
+            }
+
+            .detail {
+                padding: 0 10px;
+                height: 100%;
+            }
+
+            .detail .info {
+                margin-top: auto;
+            }
+
+            .detail .desc {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                transform: translateX(100%);
+                transition: transform 0.18s ease;
+                padding: 15px;
+                z-index: 1;
+
+                &:hover {
+                    transform: translateX(0%);
+                }
+
+                &::before {
+                    content: "";
+                    display: block;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                    bottom: 0;
+                    background: #fff;
+                    opacity: 0.97;
+                }
+
+                p {
+                    position: relative;
+                    z-index: 2;
+                }
+            }
+
+            .detail .plus {
+                width: 3px;
+                height: 100px;
+                display: block;
+                position: absolute;
+                right: 2px;
+                bottom: 4px;
+                border-right: solid 1px $primary-background-color;
+
+                &::after,
+                &::before {
+                    content: "";
+                    display: block;
+                    position: absolute;
+                    right: 1px;
+                    top: 50%;
+                    width: 1px;
+                    height: 20px;
+                    background: $primary-border-color;
+                    transform: translateY(-50%);
+                }
+
+                &::after {
+                    right: 3px;
+                }
+
+                &:hover + .desc {
+                    transform: translateX(0%);
+                }
+            }
+        }
+    }
+}

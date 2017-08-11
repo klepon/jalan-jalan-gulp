@@ -16,9 +16,4 @@ export const mobileFixNav = () => {
     $( window ).on( 'scroll', function() {
         show_hide_nav();
     });
-
-    // // Also want to make sure the navigation is where it should be on resize.
-    // $( window ).resize( function() {
-    //     show_hide_nav();
-    // });
 }

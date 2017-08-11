@@ -5,6 +5,10 @@
         padding-bottom: 1px;
     }
 
+    .detail-info .thumbnail img {
+    	display: inherit;
+    }
+
     .row:not(.gmap) {
         margin-bottom: $padding;
         display: flex;
