@@ -75,9 +75,8 @@ class PanelItemWisata extends Component {
     }
 
     open_detail = () => {
-        let day = this.props.data.filter.day_open === "setiap-hari" ? "Buka setiap hari" : "Libur tutup";
         return (
-            <span>{ day } { this.props.data.filter.open_hours } - { this.props.data.filter.closed_hours }</span>
+            <span>{ this.props.meta_key_val.open_day[this.props.data.filter.day_open] } { this.props.data.filter.open_hours } - { this.props.data.filter.closed_hours }</span>
         )
     }
 
@@ -110,7 +109,7 @@ class PanelItemWisata extends Component {
                     <p className="info">
                         { this.open_detail() }<br />
 
-                        <span>{ this.props.meta_key_val.park_ava[this.props.data.filter.park_available] }, { this.props.meta_key_val.park_dist[this.props.data.filter.park_distant] }</span><br />
+                        <span>{ this.props.meta_key_val.park_available[this.props.data.filter.park_available] }, { this.props.meta_key_val.park_distant[this.props.data.filter.park_distant] }</span><br />
 
                         <span>Kisaran harga { this.props.meta_key_val.price_range[this.props.data.filter.price_range] }</span><br />
 

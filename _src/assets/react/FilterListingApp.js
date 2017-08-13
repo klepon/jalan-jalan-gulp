@@ -6,13 +6,18 @@ import FilterFormWisata from './FilterFormWisata';
 class FilterListing extends Component {
     get_meta_key_val = () => {
         return {
-            park_dist: {
+            open_day: {
+                'setiap-hari': "Buka setiap hari",
+        		'libur-tutup': "Tutup pada hari libur"
+            },
+
+            park_distant: {
            'jauh': "jauh",
            'dekat': "dekat",
            'sedang': "agak jauh"
             },
 
-            park_ava: {
+            park_available: {
                'susah-parkir': "Susah parkir",
                'susah-mobil': "Mobil susah parkir",
                'bisa-mobil': "Parkir mobil ada",
@@ -53,13 +58,16 @@ class FilterListing extends Component {
             filter: [],
             sortby: "",
             keyword: "",
-            filter_used: []
+            filter_state: "",
+            filter_used: [],
+            filter_action: ""
         }
 
         this.on_select_page = this.on_select_page.bind(this);
         this.on_select_sort = this.on_select_sort.bind(this);
         this.on_keyword_change = this.on_keyword_change.bind(this);
         this.on_filter_check_change = this.on_filter_check_change.bind(this);
+        this.toggle_filter = this.toggle_filter.bind(this);
     }
 
     componentWillMount = () => {
@@ -84,7 +92,8 @@ class FilterListing extends Component {
 
     on_keyword_change = (e) => {
         this.setState({
-            keyword: e.target.value
+            keyword: e.target.value,
+            filter_action: "keyword"
         })
     }
 
@@ -94,15 +103,22 @@ class FilterListing extends Component {
         if( this.state.filter_used.indexOf( e.target.name ) < 0 ) {
             filter_used.push(e.target.name);
         } else {
-            filter_used.splice(this.state.filter_used.indexOf( e.target.name ));
+            filter_used.splice(this.state.filter_used.indexOf( e.target.name ), 1);
         }
 
         this.setState({
-            filter_used: filter_used
+            filter_used: filter_used,
+            filter_action: e.target.name
         })
     }
 
-    render_filter = () => {
+    toggle_filter = () => {
+        this.setState({
+            filter_state: this.state.filter_state === "open" ? "" : "open"
+        })
+    }
+
+    render_filter = (total) => {
         switch (this.props.type) {
             case 'tempat-wisata':
                 return (
@@ -114,37 +130,43 @@ class FilterListing extends Component {
                         on_select_sort={ this.on_select_sort }
                         on_keyword_change={ this.on_keyword_change }
                         on_filter_check_change={ this.on_filter_check_change }
-                        meta_key_val={ this.get_meta_key_val() } />
+                        meta_key_val={ this.get_meta_key_val() }
+                        toggle_filter={ this.toggle_filter }
+                        filter_state={ this.state.filter_state }
+                        total={ total }
+                        filter_action={ this.state.filter_action } />
                 )
                 break;
         }
     }
 
     render () {
-        let per_page = 5,
+        let per_page = 12,
             paging_number = 3,
             items = this.get_data();
 
         console.log(items);
 
         return (
-            <div>
-                { this.render_filter() }
+            <div className="row">
+                { this.render_filter(items.length) }
 
-                <PanelRepeater
-                    page={this.state.page}
-                    per_page={per_page}
-                    data={ items }
-                    domain={ this.props.domain }
-                    type={ this.props.type }
-                    meta_key_val={ this.get_meta_key_val() } />
+                <div className="list-container">
+                    <PanelRepeater
+                        page={this.state.page}
+                        per_page={per_page}
+                        data={ items }
+                        domain={ this.props.domain }
+                        type={ this.props.type }
+                        meta_key_val={ this.get_meta_key_val() } />
 
-                <Pagination
-                    page={ this.state.page }
-                    paging_number={ paging_number }
-                    per_page={ per_page }
-                    total={ items.length }
-                    on_select_page={ this.on_select_page } />
+                    <Pagination
+                        page={ this.state.page }
+                        paging_number={ paging_number }
+                        per_page={ per_page }
+                        total={ items.length }
+                        on_select_page={ this.on_select_page } />
+                </div>
             </div>
         )
     }
@@ -202,18 +224,34 @@ class FilterListing extends Component {
             rs.push(item);
         }
 
-        // filter ist here, buat function sesuai filter masing2 aja
-        // if( this.state.filter_used.open_day )
+        // filter here, buat function sesuai filter masing2 aja
+        let i, n = this.state.filter_used.length, filters;
+
+        for( i = 0; i < n; i++ ) {
+            filters = this.state.filter_used[i].split("|");
+
+            if( filters[0] === 'status' ) {
+                if( item.filter[filters[0]].indexOf(filters[1]) >= 0 ) {
+                    rs.push(item);
+                    break;
+                }
+            } else {
+                if( item.filter[filters[0]] === filters[1] ) {
+                    rs.push(item);
+                    break;
+                }
+            }
+        }
 
         return rs;
     }
 
     collect_filter_wisata = () => {
         let open_day = [],
-            open_hour = [],
+            open_hours = [],
             closed_hours = [],
-            park = [],
-            park_dist = [],
+            park_available = [],
+            park_distant = [],
             price_range = [],
             status = [];
 
@@ -222,41 +260,47 @@ class FilterListing extends Component {
                 open_day.push(item.filter.day_open);
             }
 
-            if( open_hour.indexOf(item.filter.open_hours) < 0 ) {
-                open_hour.push(item.filter.open_hours);
+            if( open_hours.indexOf(item.filter.open_hours) < 0 ) {
+                open_hours.push(item.filter.open_hours);
             }
 
             if( closed_hours.indexOf(item.filter.closed_hours) < 0 ) {
                 closed_hours.push(item.filter.closed_hours);
             }
 
-            if( park.indexOf(item.filter.park_available) < 0 ) {
-                park.push(item.filter.park_available);
+            if( park_available.indexOf(item.filter.park_available) < 0 ) {
+                park_available.push(item.filter.park_available);
             }
 
-            if( park_dist.indexOf(item.filter.park_distant) < 0 ) {
-                park_dist.push(item.filter.park_distant);
+            if( park_distant.indexOf(item.filter.park_distant) < 0 ) {
+                park_distant.push(item.filter.park_distant);
             }
 
             if( price_range.indexOf(item.filter.price_range) < 0 ) {
                 price_range.push(item.filter.price_range);
             }
 
-            if( status.indexOf(item.filter.status) < 0 ) {
-                status.push(item.filter.day_open);
+            if( item.filter.status ) {
+                item.filter.status.map(function(status_item){
+                    if( status.indexOf(status_item) < 0 ) {
+                        status.push(status_item);
+                    }
+                })
             }
+
         });
 
         this.setState({
             filter: {
                 'open_day': open_day,
-                'open_hour': open_hour,
-                'park': park,
-                'park_dist': park_dist,
+                'open_hours': open_hours,
+                'closed_hours': closed_hours,
+                'park_available': park_available,
+                'park_distant': park_distant,
                 'price_range': price_range,
                 'status': status
             }
-        })
+        });
     }
 }
 

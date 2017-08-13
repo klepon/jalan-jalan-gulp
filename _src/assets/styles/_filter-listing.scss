@@ -2,6 +2,10 @@
     max-width: 100% !important;
 }
 
+.wrap.listing-wide {
+    max-width: 1200px;
+}
+
 .pagination {
     .current {
         background: $primary-background-color;
@@ -29,6 +33,76 @@
 }
 
 .filter-listing {
+    .row {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .filter {
+        position: absolute;
+        z-index: 1;
+        background: #fff;
+        width: 270px;
+        left: -270px;
+        transition: left 0.25s ease-in-out;
+        padding: 0 20px;
+
+        &.open {
+            left: 0;
+        }
+
+        &.open .filter-togle {
+            right: -64px;
+        }
+
+        .filter-togle {
+            position: absolute;
+            top: 0;
+            right: -64px;
+            background: #fff;
+            cursor: pointer;
+            padding: 0 10px 10px 10px;
+        }
+
+        .filter-togle .icon {
+            width: 44px;
+            height: 44px;
+        }
+
+        .filter-field,
+        .filter_group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: normal;
+        }
+
+        select {
+            width: 100%;
+        }
+
+        .info {
+            font-size: 90%;
+            font-style: italic;
+            margin-top: -10px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .search .info {
+            margin: 0;
+        }
+
+        h4 {
+            margin-bottom: 0;
+        }
+    }
+
+    .list-container {
+        flex: 0 0 100%;
+    }
+
     .tile-container {
         .tile {
             margin: 0 10px 20px;
@@ -178,6 +252,26 @@
                     transform: translateX(0%);
                 }
             }
+        }
+    }
+}
+
+@media screen and (min-width: $screen-md) {
+    .filter-listing {
+        .row {
+            justify-content: space-between;
+            flex-direction: row;
+        }
+
+        .filter {
+            flex: 0 0 250px;
+            position: static;
+            width: auto;
+            padding: 0;
+        }
+
+        .list-container {
+            flex: 0 0 calc(100% - 280px);
         }
     }
 }
