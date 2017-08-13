@@ -210,6 +210,10 @@ class FilterListing extends Component {
                 });
                 break;
             case 'modified':
+                data.sort(function(a, b){
+                    return new Date(b.modified) - new Date(a.modified);
+                });
+                break;
             case 'open_hours':
             case 'closed_hours':
                 let sortby = this.state.sortby;
@@ -307,11 +311,21 @@ class FilterListing extends Component {
         this.setState({
             filter: {
                 'open_day': open_day,
-                'open_hours': open_hours,
-                'closed_hours': closed_hours,
+                'open_hours': open_hours.sort(function(a, b){
+                    return new Date('1970/01/01 ' + a) - new Date('1970/01/01 ' + b);
+                }),
+                'closed_hours': closed_hours.sort(function(a, b){
+                    return new Date('1970/01/01 ' + a) - new Date('1970/01/01 ' + b);
+                }),
                 'park_available': park_available,
                 'park_distant': park_distant,
-                'price_range': price_range,
+                'price_range': price_range.sort(function(a, b){
+                    if( a === "free" || b === "free") {
+                        return -999999999999;
+                    }
+
+                    return a - b;
+                }),
                 'status': status
             }
         });

@@ -270,6 +270,10 @@
             position: static;
             width: auto;
             padding: 0;
+
+            .filter-togle {
+                display: none;
+            }
         }
 
         .list-container {

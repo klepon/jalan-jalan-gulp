@@ -5,13 +5,14 @@ import Icon from './Icon';
 import Checkbox from './Checkbox';
 
 class FilterFormWisata extends Component {
-    render_filter = (filter_params, label_params, title) => {
+    render_filter = (filter_params, label_params, title, ucword) => {
         let filter = this.props.filter,
             filter_used = this.props.filter_used,
             onChange = this.props.on_filter_check_change,
             label = label_params,
             render_total = this.render_total,
-            label_text
+            label_text,
+            make_ucword = ucword
 
         if( filter[filter_params].length <= 1 ) {
             return null;
@@ -24,6 +25,12 @@ class FilterFormWisata extends Component {
                     label_text = filter_params === 'open_hours' || filter_params === 'closed_hours'
                         ? label + item
                         : label[item];
+
+                    if( make_ucword != undefined ) {
+                        label_text = label_text.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                            return letter.toUpperCase();
+                        });
+                    }
 
                     return (
                         <div key={ index }>
@@ -87,7 +94,7 @@ class FilterFormWisata extends Component {
                 { this.render_filter('open_hours', "buka jam ", 'Jam buka') }
                 { this.render_filter('closed_hours', "tutup jam ", 'Jam tutup') }
                 { this.render_filter('park_available', this.props.meta_key_val.park_available, 'Ketersedian parkir') }
-                { this.render_filter('park_distant', this.props.meta_key_val.park_distant, 'Jarak parkiran') }
+                { this.render_filter('park_distant', this.props.meta_key_val.park_distant, 'Jarak parkiran', true) }
                 { this.render_filter('price_range', this.props.meta_key_val.price_range, 'Range harga/tiket') }
                 { this.render_filter('status', this.props.meta_key_val.status, 'Status tempat') }
             </div>
