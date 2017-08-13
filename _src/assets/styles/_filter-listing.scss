@@ -45,14 +45,16 @@
         width: 270px;
         left: -270px;
         transition: left 0.25s ease-in-out;
-        padding: 0 20px;
+        padding: 20px;
 
         &.open {
             left: 0;
+            box-shadow: $box-shadow;
         }
 
         &.open .filter-togle {
             right: -64px;
+            box-shadow: 10px 4px 9px 0 rgba(34,34,34, 0.3);
         }
 
         .filter-togle {

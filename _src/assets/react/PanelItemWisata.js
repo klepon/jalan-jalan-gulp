@@ -84,10 +84,8 @@ class PanelItemWisata extends Component {
         let rs = [],
             status = this.props.meta_key_val.status;
 
-        // console.log(this.props.data.filter.status);
-
-        if( typeof( this.props.data.filter.status ) === 'string' ) {
-            return "Umum";
+        if( typeof( this.props.data.filter.status ) === 'string' || typeof( this.props.data.filter.status ) === 'undefined' ) {
+            return null;
         };
 
         rs = this.props.data.filter.status.map(function(item){
@@ -107,13 +105,13 @@ class PanelItemWisata extends Component {
                     <small>{ this.provinsi() } - { this.area() } - { this.terrain() }</small>
 
                     <p className="info">
+                        <span>{ this.render_status() }</span><br />
+
                         { this.open_detail() }<br />
 
                         <span>{ this.props.meta_key_val.park_available[this.props.data.filter.park_available] }, { this.props.meta_key_val.park_distant[this.props.data.filter.park_distant] }</span><br />
 
-                        <span>Kisaran harga { this.props.meta_key_val.price_range[this.props.data.filter.price_range] }</span><br />
-
-                        <span>{ this.render_status() }</span>
+                        <span>Tiket {'\u00b1'} { this.props.meta_key_val.price_range[this.props.data.filter.price_range] }</span>
                     </p>
                     <span className="plus"></span>
                     <div className="desc">

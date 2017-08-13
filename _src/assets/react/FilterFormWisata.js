@@ -69,6 +69,7 @@ class FilterFormWisata extends Component {
                         current={ this.props.sortby }
                         options={[
                             ['', 'Urutkan dengan', true],
+                            ['modified', 'Terbaru'],
                             ['name', 'Nama tempat'],
                             ['open_hours', 'Jam Buka'],
                             ['closed_hours', 'Jam Tutup'],

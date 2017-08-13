@@ -7,21 +7,24 @@ class FilterListing extends Component {
     get_meta_key_val = () => {
         return {
             open_day: {
+                'n-a': 'Jam buka',
                 'setiap-hari': "Buka setiap hari",
         		'libur-tutup': "Tutup pada hari libur"
             },
 
             park_distant: {
-           'jauh': "jauh",
-           'dekat': "dekat",
-           'sedang': "agak jauh"
+                'n-a': 'jarak ?',
+                'jauh': "jauh",
+                'dekat': "dekat",
+                'sedang': "agak jauh"
             },
 
             park_available: {
-               'susah-parkir': "Susah parkir",
-               'susah-mobil': "Mobil susah parkir",
-               'bisa-mobil': "Parkir mobil ada",
-               'bisa-bis': "Bis bisa parkir"
+                'n-a': 'Parkir ?',
+                'susah-parkir': "Susah parkir",
+                'susah-mobil': "Mobil susah parkir",
+                'bisa-mobil': "Parkir mobil ada",
+                'bisa-bis': "Bis bisa parkir"
             },
 
             price_range: {
@@ -43,9 +46,9 @@ class FilterListing extends Component {
             },
 
             status: {
-               'hit': "Ngehit",
-               'free': "Indie",
-               'new': "Tempat baru"
+                'hit': "Ngehit",
+                'free': "Indie",
+                'new': "Tempat baru"
             }
         }
     }
@@ -145,7 +148,7 @@ class FilterListing extends Component {
             paging_number = 3,
             items = this.get_data();
 
-        console.log(items);
+        // console.log(items);
 
         return (
             <div className="row">
@@ -206,9 +209,10 @@ class FilterListing extends Component {
                     return 0;
                 });
                 break;
+            case 'modified':
             case 'open_hours':
             case 'closed_hours':
-            let sortby = this.state.sortby;
+                let sortby = this.state.sortby;
                 data.sort(function(a, b){
                     return new Date('1970/01/01 ' + a.filter[sortby]) - new Date('1970/01/01 ' + b.filter[sortby]);
                 });
@@ -231,9 +235,11 @@ class FilterListing extends Component {
             filters = this.state.filter_used[i].split("|");
 
             if( filters[0] === 'status' ) {
-                if( item.filter[filters[0]].indexOf(filters[1]) >= 0 ) {
-                    rs.push(item);
-                    break;
+                if( typeof(item.filter[filters[0]]) !== "undefined" ) {
+                    if( item.filter[filters[0]].indexOf(filters[1]) >= 0 ) {
+                        rs.push(item);
+                        break;
+                    }
                 }
             } else {
                 if( item.filter[filters[0]] === filters[1] ) {
@@ -257,7 +263,9 @@ class FilterListing extends Component {
 
         this.props.data.map(function(item){
             if( open_day.indexOf(item.filter.day_open) < 0 ) {
-                open_day.push(item.filter.day_open);
+                if( item.filter.day_open != 'n-a') {
+                    open_day.push(item.filter.day_open);
+                }
             }
 
             if( open_hours.indexOf(item.filter.open_hours) < 0 ) {
@@ -269,11 +277,15 @@ class FilterListing extends Component {
             }
 
             if( park_available.indexOf(item.filter.park_available) < 0 ) {
-                park_available.push(item.filter.park_available);
+                if( item.filter.park_available != 'n-a') {
+                    park_available.push(item.filter.park_available);
+                }
             }
 
             if( park_distant.indexOf(item.filter.park_distant) < 0 ) {
-                park_distant.push(item.filter.park_distant);
+                if( item.filter.park_distant != 'n-a') {
+                    park_distant.push(item.filter.park_distant);
+                }
             }
 
             if( price_range.indexOf(item.filter.price_range) < 0 ) {
@@ -283,7 +295,9 @@ class FilterListing extends Component {
             if( item.filter.status ) {
                 item.filter.status.map(function(status_item){
                     if( status.indexOf(status_item) < 0 ) {
-                        status.push(status_item);
+                        if( status_item != 'na') {
+                            status.push(status_item);
+                        }
                     }
                 })
             }
