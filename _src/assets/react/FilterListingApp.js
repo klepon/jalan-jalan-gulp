@@ -63,7 +63,8 @@ class FilterListing extends Component {
             keyword: "",
             filter_state: "",
             filter_used: [],
-            filter_action: ""
+            filter_action: "",
+            dropdown: {}
         }
 
         this.on_select_page = this.on_select_page.bind(this);
@@ -115,6 +116,23 @@ class FilterListing extends Component {
         })
     }
 
+    toggle_dropdown = (name) => {
+        let dropdown = this.state.dropdown;
+
+        if( typeof( dropdown[name] ) === "undefined" ) {
+            dropdown = {}
+            dropdown[name] = true;
+        } else {
+            dropdown = {}
+        }
+
+        // dropdown[name] = dropdown[name] === "" ? "expanse" : "";
+
+        this.setState({
+            dropdown: dropdown
+        })
+    }
+
     toggle_filter = () => {
         this.setState({
             filter_state: this.state.filter_state === "open" ? "" : "open"
@@ -137,7 +155,9 @@ class FilterListing extends Component {
                         toggle_filter={ this.toggle_filter }
                         filter_state={ this.state.filter_state }
                         total={ total }
-                        filter_action={ this.state.filter_action } />
+                        filter_action={ this.state.filter_action }
+                        toggle_dropdown={ this.toggle_dropdown }
+                        dropdown={ this.state.dropdown } />
                 )
                 break;
         }
@@ -151,7 +171,7 @@ class FilterListing extends Component {
         // console.log(items);
 
         return (
-            <div className="row">
+            <div>
                 { this.render_filter(items.length) }
 
                 <div className="list-container">

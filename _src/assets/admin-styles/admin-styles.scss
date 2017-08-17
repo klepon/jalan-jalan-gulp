@@ -120,6 +120,11 @@
     }
 }
 
+// list post style
+td.column-taxonomy-fasilitas-bali-hotel a:nth-child(1n+2) {
+    display: none;
+}
+
 @media screen and (max-width: 782px) {
     .kp_form {
         .form-group {

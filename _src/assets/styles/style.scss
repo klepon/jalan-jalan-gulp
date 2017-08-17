@@ -8,14 +8,7 @@
 @import "_detail-article.scss";
 @import "_list-article.scss";
 @import "_filter-listing.scss";
-
-// a {
-//     color: $primary-background-color;
-//
-//     &:hover {
-//         color: darken($primary-background-color, 6.5%);
-//     }
-// }
+@import "_dropdown.scss";
 
 .wrap {
     padding: 0 $gutter-m;

@@ -1,0 +1,80 @@
+.row_filter {
+    position: relative;
+}
+
+.dropdown {
+    margin-bottom: 1px;
+    width: 100%;
+
+    .toggle {
+        cursor: pointer;
+        margin-bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        background: #f9f9f9;
+        padding: 10px;
+    }
+
+    &.expanse .toggle .icon {
+        transform: rotate(180deg);
+    }
+
+    .toggle .icon {
+        width: 25px;
+        height: 25px;
+        transition: transform 0.25s ease-in-out;
+    }
+
+    &.expanse .collaps_content {
+        max-height: 400px;
+        overflow: auto;
+    }
+
+    .collaps_content {
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.25s ease-in-out;
+    }
+
+    .filter_group {
+        padding-top: 10px;
+    }
+}
+
+@media screen and (min-width: $screen-sm) {
+    .dropdown {
+        margin-right: 1px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &.expanse .toggle {
+            background: #f1f1f1;
+        }
+
+        .collaps_content {
+            background: #fff;
+            position: absolute;
+            z-index: 3;
+            display: flex;
+            left: 0;
+            right: 0;
+        }
+
+        &.expanse .collaps_content {
+            box-shadow: $box-shadow;
+        }
+
+        .filter_group {
+            margin: 20px 0;
+            padding: 0 30px;
+            border-right: solid 1px #f1f1f1;
+
+            &:last-child {
+                border-right: none;
+            }
+        }
+    }
+}

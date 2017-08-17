@@ -10,6 +10,7 @@ class Checkbox extends Component {
                     onChange={ (e) => this.props.onChange(e) }
                     />
                 <span>{ this.props.label }</span>
+                { this.props.info_label }
             </label>
         )
     }
