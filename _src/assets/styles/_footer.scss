@@ -1,0 +1,23 @@
+.footer-link {
+    background: #000;
+    padding: 20px 0;
+
+    h2,
+    a {
+        color: #f1f1f1;
+        text-decoration: none;
+        box-shadow: none !important;
+    }
+
+    a:hover {
+        color: #fff !important;
+    }
+}
+
+@media screen and (min-width: $screen-sm) {
+    .footer-link {
+        ul.recent-article {
+            columns: 3;
+        }
+    }
+}
