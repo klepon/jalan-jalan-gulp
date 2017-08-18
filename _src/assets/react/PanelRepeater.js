@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PanelItemWisata from './PanelItemWisata';
+import PanelItemHotel from './PanelItemHotel';
 
 class PanelRepeater extends Component {
     render () {
@@ -24,6 +25,15 @@ class PanelRepeater extends Component {
                         case 'tempat-wisata':
                             return (
                                 <PanelItemWisata
+                                    key={ index }
+                                    data={ item }
+                                    domain={ domain }
+                                    meta_key_val={ meta_key_val } />
+                            )
+                            break;
+                        case 'bali-hotel':
+                            return (
+                                <PanelItemHotel
                                     key={ index }
                                     data={ item }
                                     domain={ domain }

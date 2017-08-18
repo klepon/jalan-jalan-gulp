@@ -4,7 +4,7 @@ import Input from './Input';
 import Checkbox from './Checkbox';
 import Dropdown from './Dropdown';
 
-class FilterFormWisata extends Component {
+class FilterFormHotel extends Component {
     render_filter = (filter_params, label_params, title) => {
         let filter = this.props.filter,
             filter_used = this.props.filter_used,
@@ -60,46 +60,45 @@ class FilterFormWisata extends Component {
                 <h2>Filter Tempat wisata</h2>
                 <div className="row row_filter">
                     <Dropdown
-                        name="open_day_hour"
-                        title="Operasional"
+                        name="checkin_out"
+                        title="Check in / out"
                         toggle_dropdown={ this.props.toggle_dropdown }
                         dropdown={ this.props.dropdown } >
 
-                        { this.render_filter('open_day', this.props.meta_key_val.open_day, "Hari buka") }
-                        { this.render_filter('open_hours', "buka jam ", "Jam buka") }
-                        { this.render_filter('closed_hours', "tutup jam ", "Jam tutup") }
+                        { this.render_filter('open_hours', "buka jam ", "Check in") }
+                        { this.render_filter('closed_hours', "tutup jam ", "Check out") }
                     </Dropdown>
 
                     <Dropdown
-                        name="parkiran"
-                        title="Parkiran"
+                        name="price_star"
+                        title="Harga - bintang"
                         toggle_dropdown={ this.props.toggle_dropdown }
                         dropdown={ this.props.dropdown } >
-                        { this.render_filter('park_available', this.props.meta_key_val.park_available, "Tempat parkir") }
-                        { this.render_filter('park_distant', this.props.meta_key_val.park_distant, 'Jarak parkiran') }
+                        { this.render_filter('price_range', this.props.meta_key_val.hotel_price_range, 'Range harga') }
+                        { this.render_filter('star', this.props.meta_key_val.star, 'Bintang') }
                     </Dropdown>
 
                     <Dropdown
-                        name="price_range"
-                        title="Range harga"
+                        name="area"
+                        title="Area"
                         toggle_dropdown={ this.props.toggle_dropdown }
                         dropdown={ this.props.dropdown } >
-                        { this.render_filter('price_range', this.props.meta_key_val.price_range, 'Range harga/tiket') }
+                        { this.render_filter('area', this.props.meta_key_val.dinamyc_filter.area, 'Area') }
                     </Dropdown>
 
                     <Dropdown
-                        name="status"
-                        title="Status"
+                        name="lokasi"
+                        title="Lokasi"
                         toggle_dropdown={ this.props.toggle_dropdown }
                         dropdown={ this.props.dropdown } >
-                        { this.render_filter('status', this.props.meta_key_val.status, 'Status tempat') }
+                        { this.render_filter('location', this.props.meta_key_val.dinamyc_filter.location, 'Lokasi') }
                     </Dropdown>
                 </div>
 
                 <div className="row row_sort">
                     <div className="search filter-field">
                         <Input
-                            placeholder="cari tempat wisata"
+                            placeholder="cari hotel"
                             value={ this.props.keyword }
                             onChange={ this.props.on_keyword_change } />
                         { this.render_total('keyword') }
@@ -111,10 +110,11 @@ class FilterFormWisata extends Component {
                             current={ this.props.sortby }
                             options={[
                                 ['', 'Urutkan dengan', true],
-                                ['modified', 'Terbaru'],
+                                ['star', 'Bintang'],
+                                ['price_range', 'Termurah'],
                                 ['name', 'Nama tempat'],
-                                ['open_hours', 'Jam Buka'],
-                                ['closed_hours', 'Jam Tutup'],
+                                ['open_hours', 'Check in'],
+                                ['closed_hours', 'Check out'],
                             ]} /> }
                     </div>
                 </div>
@@ -123,4 +123,4 @@ class FilterFormWisata extends Component {
     }
 }
 
-export default FilterFormWisata;
+export default FilterFormHotel;

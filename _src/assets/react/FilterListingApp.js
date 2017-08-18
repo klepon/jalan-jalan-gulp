@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import PanelRepeater from './PanelRepeater';
 import Pagination from './Pagination';
 import FilterFormWisata from './FilterFormWisata';
+import FilterFormHotel from './FilterFormHotel';
 
 class FilterListing extends Component {
     get_meta_key_val = () => {
         return {
+            dinamyc_filter: this.state.dinamyc_filter,
+
             open_day: {
                 'n-a': 'Jam buka',
                 'setiap-hari': "Buka setiap hari",
@@ -49,6 +52,26 @@ class FilterListing extends Component {
                 'hit': "Ngehit",
                 'free': "Indie",
                 'new': "Tempat baru"
+            },
+
+            star: {
+                'n-a': '-',
+                '1': 'Bintang 1',
+                '2': 'Bintang 2',
+                '3': 'Bintang 3',
+                '4': 'Bintang 4',
+                '5': 'Bintang 5'
+            },
+
+            hotel_price_range: {
+              'na': 'N/A',
+              '1': '< Rp 100.000',
+              '5': 'Rp 101.000 - Rp 500.000',
+              '10': 'Rp 501.000 - Rp 1.000.000',
+              '20': 'Rp 1.001.000 - Rp 2.000.000',
+              '500': 'Rp 2.001.000 - Rp 5.000.000',
+              '2000': 'Rp 5.001.000 - Rp 20.000.000',
+              'berjuta': ' > Rp 20.001.000'
             }
         }
     }
@@ -64,7 +87,8 @@ class FilterListing extends Component {
             filter_state: "",
             filter_used: [],
             filter_action: "",
-            dropdown: {}
+            dropdown: {},
+            dinamyc_filter: {}
         }
 
         this.on_select_page = this.on_select_page.bind(this);
@@ -78,6 +102,9 @@ class FilterListing extends Component {
         switch (this.props.type) {
             case 'tempat-wisata':
                 this.collect_filter_wisata();
+                break;
+            case 'bali-hotel':
+                this.collect_filter_hotel();
                 break;
         }
     }
@@ -160,6 +187,25 @@ class FilterListing extends Component {
                         dropdown={ this.state.dropdown } />
                 )
                 break;
+            case 'bali-hotel':
+                return (
+                    <FilterFormHotel
+                        filter={ this.state.filter }
+                        filter_used={ this.state.filter_used }
+                        sortby={ this.state.sortby }
+                        keyword={ this.state.keyword }
+                        on_select_sort={ this.on_select_sort }
+                        on_keyword_change={ this.on_keyword_change }
+                        on_filter_check_change={ this.on_filter_check_change }
+                        meta_key_val={ this.get_meta_key_val() }
+                        toggle_filter={ this.toggle_filter }
+                        filter_state={ this.state.filter_state }
+                        total={ total }
+                        filter_action={ this.state.filter_action }
+                        toggle_dropdown={ this.toggle_dropdown }
+                        dropdown={ this.state.dropdown } />
+                )
+                break;
         }
     }
 
@@ -168,7 +214,7 @@ class FilterListing extends Component {
             paging_number = 3,
             items = this.get_data();
 
-        // console.log(items);
+        // console.log(this.props.data);
 
         return (
             <div>
@@ -219,6 +265,8 @@ class FilterListing extends Component {
     }
 
     sort_data = (data) => {
+        let sortby;
+
         switch (this.state.sortby) {
             case 'name':
                 data.sort(function(a, b){
@@ -236,9 +284,16 @@ class FilterListing extends Component {
                 break;
             case 'open_hours':
             case 'closed_hours':
-                let sortby = this.state.sortby;
+                sortby = this.state.sortby;
                 data.sort(function(a, b){
                     return new Date('1970/01/01 ' + a.filter[sortby]) - new Date('1970/01/01 ' + b.filter[sortby]);
+                });
+                break;
+            case 'price_range':
+            case 'star':
+                sortby = this.state.sortby;
+                data.sort(function(a, b){
+                    return a.filter[sortby] - b.filter[sortby];
                 });
                 break;
         }
@@ -264,6 +319,11 @@ class FilterListing extends Component {
                         rs.push(item);
                         break;
                     }
+                }
+            } else if (filters[0] === 'area' || filters[0] === 'location') {
+                if( typeof(item.taxo[filters[1]]) !== "undefined" ) {
+                    rs.push(item);
+                    break;
                 }
             } else {
                 if( item.filter[filters[0]] === filters[1] ) {
@@ -349,6 +409,112 @@ class FilterListing extends Component {
                 'status': status
             }
         });
+    }
+
+    collect_filter_hotel = () => {
+        let open_hours = [],
+            closed_hours = [],
+            price_range = [],
+            star = [],
+            area = [],
+            location = [],
+            area_text = {},
+            location_text = {};
+
+        this.props.data.map(function(item){
+
+            if( open_hours.indexOf(item.filter.open_hours) < 0 ) {
+                open_hours.push(item.filter.open_hours);
+            }
+
+            if( closed_hours.indexOf(item.filter.closed_hours) < 0 ) {
+                closed_hours.push(item.filter.closed_hours);
+            }
+
+            if( price_range.indexOf(item.filter.price_range) < 0 ) {
+                price_range.push(item.filter.price_range);
+            }
+
+            if( star.indexOf(item.filter.star) < 0 ) {
+                star.push(item.filter.star);
+            }
+
+            for (var key in item.taxo) {
+                if (item.taxo.hasOwnProperty(key)) {
+                    if( key.split('/')[0] === 'hotel-bali' ) {
+                        if( area.indexOf(key) < 0 ) {
+                            area.push(key);
+                            area_text[key] = item.taxo[key];
+                        }
+                    }
+                }
+            }
+
+            for (var key in item.taxo) {
+                if (item.taxo.hasOwnProperty(key)) {
+                    if( key.split('/')[0] === 'hotel-bali-lokasi' ) {
+                        if( location.indexOf(key) < 0 ) {
+                            location.push(key);
+                            location_text[key] = item.taxo[key];
+                        }
+                    }
+                }
+            }
+        });
+
+        this.setState({
+            dinamyc_filter: {
+                'area': area_text,
+                'location': location_text
+            },
+
+            filter: {
+                'open_hours': open_hours.sort(function(a, b){
+                    return new Date('1970/01/01 ' + a) - new Date('1970/01/01 ' + b);
+                }),
+                'closed_hours': closed_hours.sort(function(a, b){
+                    return new Date('1970/01/01 ' + a) - new Date('1970/01/01 ' + b);
+                }),
+                'price_range': price_range.sort(function(a, b){
+                    if( a === "free" || b === "free") {
+                        return -999999999999;
+                    }
+
+                    return a - b;
+                }),
+                'star': star.sort(function(a, b){
+                    return a - b;
+                }),
+                'area': area.sort(function(a, b){
+                    if (a < b)
+                        return -1;
+                    if (a > b)
+                        return 1;
+                    return 0;
+                }),
+                'location': location.sort(function(a, b){
+                    if (a < b)
+                        return -1;
+                    if (a > b)
+                        return 1;
+                    return 0;
+                })
+            }
+        });
+    }
+
+    get_taxo_by_name = (name, item) => {
+        let rs = [];
+
+        for (var key in item) {
+            if (item.hasOwnProperty(key)) {
+                if( key.split('/')[0] === name ) {
+                    rs.push([key, item[key]])
+                }
+            }
+        }
+
+        return rs;
     }
 }
 
