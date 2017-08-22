@@ -83,19 +83,20 @@ class GoogleMap extends Component {
     }
 
     infowindow_content = (item) => {
-        let infowindow = '<div class="info-window-container">'+
-            '<a class="preview" href="'+ this.props.domain +'/tempat-wisata/'+ item.slug +'">'+
-                '<img src="'+ this.props.domain +'/wp-content/uploads/'+ item.thumb +'" />'+
-            '</a>'+
-            '<h5>'+
-                '<a href="'+ this.props.domain +'/tempat-wisata/'+ item.slug +'">'+
-                    item.title+
+        let slug = this.props.type === 'tempat-wisata' ? '/tempat-wisata/' : '/bali-hotel/',
+            infowindow = '<div class="info-window-container">'+
+                '<a class="preview" href="'+ this.props.domain + slug + item.slug +'">'+
+                    '<img src="'+ this.props.domain +'/wp-content/uploads/'+ item.thumb +'" />'+
                 '</a>'+
-            '</h5>'+
-            '<p>'+
-                item.excerpt
-            '</p>'+
-        '</div>';
+                '<h5>'+
+                    '<a href="'+ this.props.domain + slug + item.slug +'">'+
+                        item.title+
+                    '</a>'+
+                '</h5>'+
+                '<p>'+
+                    item.excerpt
+                '</p>'+
+            '</div>';
 
         return infowindow;
     }
