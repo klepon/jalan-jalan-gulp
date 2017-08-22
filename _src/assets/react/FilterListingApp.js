@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PanelRepeater from './PanelRepeater';
+import ListRepeater from './ListRepeater';
+import GoogleMap from './GoogleMap';
 import Pagination from './Pagination';
 import FilterFormWisata from './FilterFormWisata';
 import FilterFormHotel from './FilterFormHotel';
@@ -81,6 +83,7 @@ class FilterListing extends Component {
 
         this.state = {
             page: 1,
+            view_type: "list", // list|map
             filter: [],
             sortby: "",
             keyword: "",
@@ -88,14 +91,17 @@ class FilterListing extends Component {
             filter_used: [],
             filter_action: "",
             dropdown: {},
-            dinamyc_filter: {}
+            dinamyc_filter: {},
+            map_state: [null, -8.658719535191599, 115.2183950000001, 17]
         }
 
         this.on_select_page = this.on_select_page.bind(this);
         this.on_select_sort = this.on_select_sort.bind(this);
         this.on_keyword_change = this.on_keyword_change.bind(this);
         this.on_filter_check_change = this.on_filter_check_change.bind(this);
+        this.set_map_state = this.set_map_state.bind(this);
         this.toggle_filter = this.toggle_filter.bind(this);
+        this.toggle_view = this.toggle_view.bind(this);
     }
 
     componentWillMount = () => {
@@ -109,16 +115,22 @@ class FilterListing extends Component {
         }
     }
 
+    reset_page = () => {
+        this.setState( (state, props) => {
+            return { page: 1 }
+        });
+    }
+
     on_select_page = (new_page) => {
-        this.setState({
-            page: new_page
+        this.setState( (state, props) => {
+            return { page: new_page }
         });
     }
 
     on_select_sort = (e) => {
         this.setState({
             sortby: e.target.value
-        })
+        });
     }
 
     on_keyword_change = (e) => {
@@ -140,6 +152,12 @@ class FilterListing extends Component {
         this.setState({
             filter_used: filter_used,
             filter_action: e.target.name
+        })
+    }
+
+    set_map_state = (infowindow_id, center_lat, center_lng, zoom) => {
+        this.setState({
+            map_state: [infowindow_id, center_lat, center_lng, zoom]
         })
     }
 
@@ -166,6 +184,12 @@ class FilterListing extends Component {
         })
     }
 
+    toggle_view = (type) => {
+        this.setState({
+            view_type: type
+        })
+    }
+
     render_filter = (total) => {
         switch (this.props.type) {
             case 'tempat-wisata':
@@ -184,6 +208,8 @@ class FilterListing extends Component {
                         total={ total }
                         filter_action={ this.state.filter_action }
                         toggle_dropdown={ this.toggle_dropdown }
+                        toggle_view={ this.toggle_view }
+                        view_type= { this.state.view_type }
                         dropdown={ this.state.dropdown } />
                 )
                 break;
@@ -203,23 +229,20 @@ class FilterListing extends Component {
                         total={ total }
                         filter_action={ this.state.filter_action }
                         toggle_dropdown={ this.toggle_dropdown }
+                        view_type= { this.state.view_type }
+                        toggle_view={ this.toggle_view }
                         dropdown={ this.state.dropdown } />
                 )
                 break;
         }
     }
 
-    render () {
+    render_result = (items) => {
         let per_page = 12,
-            paging_number = 3,
-            items = this.get_data();
+            paging_number = 3;
 
-        // console.log(this.props.data);
-
-        return (
-            <div>
-                { this.render_filter(items.length) }
-
+        if( this.state.view_type === 'list' ) {
+            return (
                 <div className="list-container">
                     <PanelRepeater
                         page={this.state.page}
@@ -234,8 +257,42 @@ class FilterListing extends Component {
                         paging_number={ paging_number }
                         per_page={ per_page }
                         total={ items.length }
-                        on_select_page={ this.on_select_page } />
+                        on_select_page={ this.on_select_page }
+                        reset_page={ this.reset_page } />
                 </div>
+            )
+        } else {
+            return (
+                <div className="map-container">
+                    <GoogleMap
+                        data={ items }
+                        domain={ this.props.domain }
+                        type={ this.props.type }
+                        map_state={ this.state.map_state }
+                        set_map_state={ this.set_map_state } />
+
+                    <ListRepeater
+                        data={ items }
+                        domain={ this.props.domain }
+                        type={ this.props.type }
+                        meta_key_val={ this.get_meta_key_val() }
+                        map_state={ this.state.map_state }
+                        set_map_state={ this.set_map_state } />
+                </div>
+            )
+        }
+    }
+
+    render () {
+        let items = this.get_data();
+
+        // console.log(this.props.data);
+
+        return (
+            <div>
+                { this.render_filter(items.length) }
+
+                { this.render_result(items) }
             </div>
         )
     }

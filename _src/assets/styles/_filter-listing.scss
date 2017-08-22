@@ -2,32 +2,6 @@
     max-width: 100% !important;
 }
 
-.pagination {
-    .current {
-        background: $primary-background-color;
-        color: $primary-color;
-        cursor: default;
-
-        &:hover {
-            box-shadow: 1px 1px 4px -1px rgba(0,0,0,.3);
-        }
-    }
-
-    button {
-        background: none;
-        color: #222;
-        box-shadow: 1px 1px 4px -1px rgba(0,0,0,.3);
-        padding: 5px;
-        width: 40px;
-        height: 40px;
-        margin: 0 7px;
-
-        &:hover {
-            box-shadow: 2px 2px 7px -1px rgba(0,0,0,.3);
-        }
-    }
-}
-
 .filter-listing {
     .row {
         display: flex;
@@ -38,7 +12,10 @@
         background: #fff;
         width: 100%;
 
-        .filter-field,
+        .filter-field {
+            margin-bottom: 1px;
+        }
+
         .filter_group {
             margin-bottom: 20px;
         }
@@ -64,7 +41,28 @@
     }
 
     .row_filter {
-        margin-bottom: 10px;
+        margin-bottom: 1px;
+    }
+
+    .view_type {
+        display: flex;
+
+        button {
+            width: 100%;
+            margin: 0;
+            height: 45px;
+            border-radius: 0;
+
+            &:first-child {
+                border-top-left-radius: $border-radius;
+                border-bottom-left-radius: $border-radius;
+            }
+
+            &:last-child {
+                border-top-right-radius: $border-radius;
+                border-bottom-right-radius: $border-radius;
+            }
+        }
     }
 
     .list-container {
@@ -111,6 +109,85 @@
             margin-bottom: 10px;
         }
     }
+
+    .map-list-container {
+        border-top: solid 1px #f1f1f1;
+        padding-top: 5px;
+        max-height: 300px;
+        overflow: auto;
+
+        .list {
+            display: flex;
+            border-bottom: solid 1px #f1f1f1;
+            padding: 5px 0;
+            margin-bottom: 5px;
+        }
+
+        .list h3 {
+            margin: 0;
+        }
+
+        .list a {
+            box-shadow: none;
+
+            &:hover {
+                box-shadow: none;
+            }
+        }
+
+        .lead_img {
+            flex: 0 0 70px;
+            margin-left: 10px;
+        }
+
+        .lead_img a {
+            display: block;
+        }
+
+        .lead_img .star {
+            margin: 0;
+        }
+
+        .lead_img .star span {
+            width: 70px;
+        }
+
+        .detail {
+            width: 100%;
+        }
+
+        .anchor .icon {
+            width: 30px;
+            height: 30px;
+            color: $primary-background-color;
+            cursor: pointer;
+
+            &:hover {
+                color: darken($primary-background-color, 6.5%);
+            }
+        }
+    }
+
+    .google_map_react {
+        min-height: 300px;
+    }
+}
+
+.info-window-container {
+    width: 250px;
+
+    .preview {
+        width: 250px;
+    }
+
+    .preview img {
+        max-width: 100%;
+    }
+
+    h5 {
+        margin: 0;
+        padding: 0;
+    }
 }
 
 @media screen and (max-width: $screen-sm - 0.05) {
@@ -131,7 +208,8 @@
     .filter-listing {
         .row {
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: flex-start;
+            margin-bottom: 20px;
         }
 
         .tile-container {
@@ -226,6 +304,43 @@
                 }
             }
         }
+
+        .row_sort {
+            .filter-field {
+                margin-left: 10px;
+            }
+
+            .search {
+                margin-right: auto;
+                margin-left: 0;
+            }
+
+            .sort {
+                order: 2;
+            }
+
+            .view_type {
+                order: 1;
+            }
+        }
+
+        .map-container {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+        }
+
+        .map-list-container {
+            flex: 0 0 300px;
+
+            h3 {
+                font-size: 1.1em;
+            }
+        }
+
+        .google_map_react {
+            flex: 0 0 calc(100% - 320px);
+        }
     }
 }
 
@@ -244,6 +359,14 @@
 
         .list-container {
             flex: 0 0 calc(100% - 280px);
+        }
+
+        .map-list-container {
+            max-height: 500px;
+        }
+
+        .google_map_react {
+            height: 500px;
         }
     }
 }

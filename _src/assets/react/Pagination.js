@@ -2,11 +2,16 @@ import React, { Component } from 'react'
 import Button from './Button';
 
 class Pagination extends Component {
+    componentWillReceiveProps = (nextProps) => {
+        if( Math.ceil(this.props.total / this.props.per_page) === 1 && this.props.page !== 1 ) {
+            this.props.reset_page();
+        }
+    }
+
     generate_pagination = () => {
         let i,
             rs = [],
             page,
-            current,
             start = 0,
             end,
             max_end = Math.ceil(this.props.total / this.props.per_page);
@@ -44,16 +49,15 @@ class Pagination extends Component {
         // loop pagging
         for( i = start; i < end; i++ ) {
             page = i+1;
-            current = page === this.props.page ? "current" : "";
 
             // render item
             rs.push(
                 <Button
-                    key={i}
+                    key={ i }
                     onClick={ this.props.on_select_page }
                     value={ page }
-                    class_name={current}
-                    title={page}
+                    current={ this.props.page }
+                    title={ page }
                 />
             )
         }
@@ -80,10 +84,6 @@ class Pagination extends Component {
     }
 
     render () {
-        if( Math.ceil(this.props.total / this.props.per_page) === 1 ) {
-            return null;
-        }
-
         return (
             <div className="pagination">
                 {this.generate_pagination()}

@@ -3,6 +3,7 @@ import Select from './Select';
 import Input from './Input';
 import Checkbox from './Checkbox';
 import Dropdown from './Dropdown';
+import Button from './Button';
 
 class FilterFormWisata extends Component {
     render_filter = (filter_params, label_params, title) => {
@@ -57,7 +58,8 @@ class FilterFormWisata extends Component {
 
         return (
             <div className={"filter "+ this.props.filter_state }>
-                <h2>Filter Tempat wisata</h2>
+                <h2>Filter tempat wisata</h2>
+                <p>{ this.props.total } tempat wisata</p>
                 <div className="row row_filter">
                     <Dropdown
                         name="open_day_hour"
@@ -116,6 +118,23 @@ class FilterFormWisata extends Component {
                                 ['open_hours', 'Jam Buka'],
                                 ['closed_hours', 'Jam Tutup'],
                             ]} /> }
+                    </div>
+
+                    <div className="view_type filter-field">
+                        <Button
+                            key={0}
+                            onClick={ this.props.toggle_view }
+                            value='list'
+                            current={ this.props.view_type }
+                            title="List"
+                        />
+                        <Button
+                            key={1}
+                            onClick={ this.props.toggle_view }
+                            value='map'
+                            current={ this.props.view_type }
+                            title="Peta"
+                        />
                     </div>
                 </div>
             </div>

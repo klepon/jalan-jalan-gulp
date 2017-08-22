@@ -10,6 +10,7 @@
 @import "_filter-listing.scss";
 @import "_dropdown.scss";
 @import "_footer.scss";
+@import "_pagination.scss";
 
 .wrap {
     padding: 0 $gutter-m;
@@ -89,6 +90,31 @@
     &:hover {
         background-color: darken($primary-background-color, 6.5%);
         color: $primary-color;
+    }
+}
+
+button {
+    background: none;
+    color: #222;
+    box-shadow: 1px 1px 4px -1px rgba(0,0,0,.3);
+    padding: 10px 20px;
+    margin: 0 7px;
+
+    &:hover {
+        box-shadow: 2px 2px 7px -1px rgba(0,0,0,.3);
+        background: $primary-background-color;
+        color: $primary-color;
+        opacity: 0.8;
+    }
+
+    &.active {
+        background: $primary-background-color;
+        color: $primary-color;
+        cursor: default;
+
+        &:hover {
+            box-shadow: 1px 1px 4px -1px rgba(0,0,0,.3);
+        }
     }
 }
 
