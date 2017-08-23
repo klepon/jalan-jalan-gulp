@@ -58,7 +58,6 @@ class FilterFormHotel extends Component {
 
         return (
             <div className={"filter "+ this.props.filter_state }>
-                <h2>Filter hotel di Bali</h2>
                 <p>{ this.props.total } hotel di Bali</p>
                 <div className="row row_filter">
                     <Dropdown

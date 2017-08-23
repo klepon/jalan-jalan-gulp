@@ -36,7 +36,6 @@
 .star {
     span {
         width: 80px;
-        background: #fff;
         display: flex;
         height: 16px;
         justify-content: space-between;
@@ -44,35 +43,24 @@
         overflow: hidden;
         position: relative;
 
-        &::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 16px;
-            left: 0;
-            background: $white;
-            z-index: 1;
-            opacity: 0.9;
+        &.star-1 svg:nth-child(n+2) {
+            opacity: 0.1;
         }
 
-        &.star-1::before {
-            left: 20%;
+        &.star-2 svg:nth-child(n+3) {
+            opacity: 0.1;
         }
 
-        &.star-2::before {
-            left: 40%;
+        &.star-3 svg:nth-child(n+4) {
+            opacity: 0.1;
         }
 
-        &.star-3::before {
-            left: 60%;
+        &.star-4 svg:nth-child(n+5) {
+            opacity: 0.1;
         }
 
-        &.star-4::before {
-            left: 80%;
-        }
-
-        &.star-5::before {
-            left: 100%;
+        &.star-5 svg:nth-child(n+6) {
+            opacity: 0.1;
         }
     }
 }
@@ -121,5 +109,13 @@ button {
 @media screen and (min-width: $screen-sm) {
     .wrap {
         padding: 0 $gutter-d;
+    }
+
+    .site-content {
+        padding: 2.5em 0;
+    }
+
+    .page.page-one-column .entry-header {
+        margin-bottom: 1em
     }
 }

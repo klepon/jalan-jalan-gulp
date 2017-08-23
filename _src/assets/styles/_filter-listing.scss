@@ -1,3 +1,7 @@
+.listing-wide {
+    max-width: $screen-lg;
+}
+
 .full_width_content .content-area {
     max-width: 100% !important;
 }
@@ -112,15 +116,20 @@
 
     .map-list-container {
         border-top: solid 1px #f1f1f1;
-        padding-top: 5px;
         max-height: 300px;
         overflow: auto;
+        position: relative;
 
         .list {
             display: flex;
             border-bottom: solid 1px #f1f1f1;
-            padding: 5px 0;
-            margin-bottom: 5px;
+            padding: 10px 10px 5px 0;
+            cursor: pointer;
+
+            &.active,
+            &:hover {
+                background: #f1f1f1;
+            }
         }
 
         .list h3 {
@@ -160,11 +169,6 @@
             width: 30px;
             height: 30px;
             color: $primary-background-color;
-            cursor: pointer;
-
-            &:hover {
-                color: darken($primary-background-color, 6.5%);
-            }
         }
     }
 
@@ -311,12 +315,12 @@
             }
 
             .search {
-                margin-right: auto;
                 margin-left: 0;
             }
 
             .sort {
                 order: 2;
+                margin-left: auto;
             }
 
             .view_type {
@@ -331,7 +335,8 @@
         }
 
         .map-list-container {
-            flex: 0 0 300px;
+            flex: 0 0 320px;
+            max-height: 500px;
 
             h3 {
                 font-size: 1.1em;
@@ -340,6 +345,7 @@
 
         .google_map_react {
             flex: 0 0 calc(100% - 320px);
+            height: 500px;
         }
     }
 }
@@ -362,11 +368,11 @@
         }
 
         .map-list-container {
-            max-height: 500px;
+            max-height: 550px;
         }
 
         .google_map_react {
-            height: 500px;
+            height: 550px;
         }
     }
 }

@@ -13,33 +13,12 @@ class PanelItemWisata extends Component {
         }
 
         return (
-            <a href={ this.props.domain +'/bali-hotel/'+ this.props.data.slug } title={ this.props.data.title } ><img src={ this.props.domain +'/wp-content/uploads/'+ this.props.data.thumb } alt={ this.props.data.title } /></a>
-        )
-    }
-
-    provinsi = () => {
-        let taxo = this.get_taxo_by_name('hotel', 'single')
-        return (
-            <Link
-                link={ this.props.domain +'/'+ taxo[0] }
-                title={ taxo[1] }
-            />
-        )
-    }
-
-    area = () => {
-        let taxo = this.get_taxo_by_name('hotel-bali', 'single')
-        return (
-            <Link
-                link={ this.props.domain +'/'+ taxo[0] }
-                title={ taxo[1] }
-            />
+            <img src={ this.props.domain +'/wp-content/uploads/'+ this.props.data.thumb } alt={ this.props.data.title } />
         )
     }
 
     terrain = () => {
-        let domain = this.props.domain,
-            links = this.get_taxo_by_name('hotel-bali-lokasi'),
+        let links = this.get_taxo_by_name('hotel-bali-lokasi'),
             coma = "";
 
         return links.map(function(item, index){
@@ -48,10 +27,7 @@ class PanelItemWisata extends Component {
             return (
                 <span
                     key={ index } >
-                    <Link
-                        link={ domain +'/'+ item[0] }
-                        title={ item[1] }
-                    />{coma}
+                    { item }{coma}
                 </span>
             )
         });
@@ -64,9 +40,9 @@ class PanelItemWisata extends Component {
             if (this.props.data.taxo.hasOwnProperty(key)) {
                 if( key.split('/')[0] === name ) {
                     if( single === 'single' ) {
-                        return [key, this.props.data.taxo[key]];
+                        return this.props.data.taxo[key];
                     } else {
-                        rs.push([key, this.props.data.taxo[key]])
+                        rs.push(this.props.data.taxo[key])
                     }
                 }
             }
@@ -76,17 +52,27 @@ class PanelItemWisata extends Component {
     }
 
     render () {
+        let active = this.props.map_state[0] === this.props.data.id ? " active " : "";
+
         return (
-            <div className="list">
-                <div className="anchor" onClick={ () => this.props.set_map_state(
-                    this.props.data.id, this.props.map_state[1], this.props.map_state[2], this.props.map_state[3]
-                ) }>
+            <div className={"list list-"+ this.props.data.id + active } onClick={ () => this.props.set_map_state(
+                this.props.data.id,
+                this.props.map_state[1],
+                this.props.map_state[2],
+                this.props.map_state[3],
+                false
+            ) }>
+                <div className="anchor">
                     <Icon icon="icon-pin" />
                 </div>
 
                 <div className="detail">
-                    <h3><a href={ this.props.domain +'/bali-hotel/'+ this.props.data.slug } title={ this.props.data.title }>{ this.props.data.title }</a></h3>
-                    <small>{ this.provinsi() } - { this.area() } - { this.terrain() }</small>
+                    <h3>{ this.props.data.title }</h3>
+                    <small>
+                        <span>{ this.get_taxo_by_name('hotel', 'single') }</span> -
+                        <span>{ this.get_taxo_by_name('hotel-bali', 'single') }</span> -
+                        { this.terrain() }
+                    </small>
                 </div>
 
                 <div className="lead_img">

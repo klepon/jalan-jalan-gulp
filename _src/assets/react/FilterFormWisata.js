@@ -58,7 +58,6 @@ class FilterFormWisata extends Component {
 
         return (
             <div className={"filter "+ this.props.filter_state }>
-                <h2>Filter tempat wisata</h2>
                 <p>{ this.props.total } tempat wisata</p>
                 <div className="row row_filter">
                     <Dropdown

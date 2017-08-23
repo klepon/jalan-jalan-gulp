@@ -83,7 +83,7 @@ class FilterListing extends Component {
 
         this.state = {
             page: 1,
-            view_type: "list", // list|map
+            view_type: "map", // list|map
             filter: [],
             sortby: "",
             keyword: "",
@@ -92,7 +92,7 @@ class FilterListing extends Component {
             filter_action: "",
             dropdown: {},
             dinamyc_filter: {},
-            map_state: [null, -8.658719535191599, 115.2183950000001, 17]
+            map_state: [null, -8.658719535191599, 115.2183950000001, 17, false]
         }
 
         this.on_select_page = this.on_select_page.bind(this);
@@ -155,9 +155,9 @@ class FilterListing extends Component {
         })
     }
 
-    set_map_state = (infowindow_id, center_lat, center_lng, zoom) => {
+    set_map_state = (infowindow_id, center_lat, center_lng, zoom, show_item_list) => {
         this.setState({
-            map_state: [infowindow_id, center_lat, center_lng, zoom]
+            map_state: [infowindow_id, center_lat, center_lng, zoom, show_item_list]
         })
     }
 
@@ -286,7 +286,7 @@ class FilterListing extends Component {
     render () {
         let items = this.get_data();
 
-        // console.log(this.props.data);
+        // console.log(items);
 
         return (
             <div>

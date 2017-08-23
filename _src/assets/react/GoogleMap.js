@@ -6,7 +6,8 @@ class GoogleMap extends Component {
         bounds = new google.maps.LatLngBounds(),
         infowindow_content = this.infowindow_content,
         mapLabel,
-        marker_clusterer
+        marker_clusterer,
+        set_map_state = this.set_map_state
 
         window.map = new google.maps.Map(document.getElementById('gmap'), {
             center: { lat: latlng[0] * 1, lng: latlng[1] * 1 },
@@ -28,8 +29,9 @@ class GoogleMap extends Component {
 
             // marker listerner show infowindow
             marker.addListener('click', function() {
-                window.iw.setContent(infowindow_content(item));
-                window.iw.open(window.map, marker);
+                // window.iw.setContent(infowindow_content(item));
+                // window.iw.open(window.map, marker);
+                set_map_state(marker.id);
             });
 
             // create and add label to marker for further use in clusterer
@@ -49,6 +51,7 @@ class GoogleMap extends Component {
             map.fitBounds(bounds);
         });
 
+        // init clusterer
         window.mc = new MarkerClusterer(window.map, window.markers, {
             averageCenter: true,
             styles: [{
@@ -72,6 +75,7 @@ class GoogleMap extends Component {
               }]
         });
 
+        // end clustering
         google.maps.event.addListener(window.mc, "clusteringend", function (c) {
             var m = c.getMarkers();
             for (var i = 0; i < m.length; i++ ){
@@ -79,26 +83,71 @@ class GoogleMap extends Component {
             }
         });
 
+        // Listen for the dragend event
+        var strictBounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng(-8.943243114359708, 114.38373836250378),
+            new google.maps.LatLng(-8.011469151843922, 115.74878963203503)
+        );
+
+        google.maps.event.addListener(map, 'dragend', function() {
+            if (strictBounds.contains(map.getCenter())) return;
+
+            // We're out of bounds - Move the map back within the bounds
+
+            var c = map.getCenter(),
+            x = c.lng(),
+            y = c.lat(),
+
+            maxX = strictBounds.getNorthEast().lng(),
+            maxY = strictBounds.getNorthEast().lat(),
+            minX = strictBounds.getSouthWest().lng(),
+            minY = strictBounds.getSouthWest().lat();
+
+            if (x < minX) x = minX;
+            if (x > maxX) x = maxX;
+            if (y < minY) y = minY;
+            if (y > maxY) y = maxY;
+
+            map.setCenter(new google.maps.LatLng(y, x));
+        });
+
+        // Limit the zoom level
+        google.maps.event.addListener(map, 'zoom_changed', function() {
+            if (map.getZoom() < 9) map.setZoom(9);
+        });
+
         // console.log(this.props.data);
     }
 
     infowindow_content = (item) => {
-        let slug = this.props.type === 'tempat-wisata' ? '/tempat-wisata/' : '/bali-hotel/',
-            infowindow = '<div class="info-window-container">'+
-                '<a class="preview" href="'+ this.props.domain + slug + item.slug +'">'+
-                    '<img src="'+ this.props.domain +'/wp-content/uploads/'+ item.thumb +'" />'+
+        return '<div class="info-window-container">'+
+            '<a class="preview" href="'+ this.props.domain +'/'+ this.props.type +'/'+ item.slug +'">'+
+                '<img src="'+ this.props.domain +'/wp-content/uploads/'+ item.thumb +'" />'+
+            '</a>'+
+            '<h5>'+
+                '<a href="'+ this.props.domain +'/'+ this.props.type +'/'+ item.slug +'">'+
+                    item.title+
                 '</a>'+
-                '<h5>'+
-                    '<a href="'+ this.props.domain + slug + item.slug +'">'+
-                        item.title+
-                    '</a>'+
-                '</h5>'+
-                '<p>'+
-                    item.excerpt
-                '</p>'+
-            '</div>';
+            '</h5>'+
+            '<p>'+
+                item.excerpt
+            '</p>'+
+        '</div>';
+    }
 
-        return infowindow;
+    set_map_state = (id) => {
+        this.props.set_map_state(
+            id,
+            this.props.map_state[1],
+            this.props.map_state[2],
+            this.props.map_state[3],
+            true
+        )
+    }
+
+    show_list_item = (id) => {
+        let list_con = jQuery('.map-list-container');
+        list_con.scrollTo(list_con.find('.list-'+ id).offset().top - list_con.find('.list-'+ id).offsetParent().offset().top + list_con.scrollTop());
     }
 
     componentWillMount = () => {
@@ -115,6 +164,7 @@ class GoogleMap extends Component {
         // console.log(this.props.map_state);
 
         if( prevProps.map_state != this.props.map_state ) {
+
             if( this.props.map_state[0] !== null ) {
                 var i;
                 for( i in window.markers ) {
@@ -127,6 +177,10 @@ class GoogleMap extends Component {
                         window.iw = new google.maps.InfoWindow();
                         window.iw.setContent(this.infowindow_content(this.props.data[i]));
                         window.iw.open(window.map, window.markers[i]);
+
+                        if( this.props.map_state[4] ) {
+                            this.show_list_item(this.props.map_state[0])
+                        }
                     }
                 }
             }
