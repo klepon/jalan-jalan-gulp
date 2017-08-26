@@ -21,7 +21,7 @@ class GoogleMap extends Component {
             // marker
             latlng = item.filter.lat_long.split(',');
             let marker = new google.maps.Marker({
-                icon: "https://goo.gl/jC6pF4",
+                icon: this.data.domain +"/themes/jalan-jalan/images/marker.png",
                 position: new google.maps.LatLng(latlng[0] * 1, latlng[1] * 1),
                 title: item.title,
                 id: item.id
@@ -55,19 +55,19 @@ class GoogleMap extends Component {
         window.mc = new MarkerClusterer(window.map, window.markers, {
             averageCenter: true,
             styles: [{
-                url: 'https://goo.gl/LXGz5c',
+                url: this.data.domain +'/themes/jalan-jalan/images/cluster-1.png',
                 height: 40,
                 width: 35,
                 textColor: '#1b046f',
                 textSize: 16
               }, {
-                url: 'https://goo.gl/bZiwQa',
+                url: this.data.domain +'/themes/jalan-jalan/images/cluster-2.png',
                 height: 50,
                 width: 45,
                 textColor: '#1b046f',
                 textSize: 20
               }, {
-                url: 'https://goo.gl/69DM5d',
+                url: this.data.domain +'/themes/jalan-jalan/images/cluster-3.png',
                 height: 60,
                 width: 55,
                 textColor: '#1b046f',
