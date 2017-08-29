@@ -7,7 +7,8 @@ class GoogleMap extends Component {
         infowindow_content = this.infowindow_content,
         mapLabel,
         marker_clusterer,
-        set_map_state = this.set_map_state
+        set_map_state = this.set_map_state,
+        domain = this.props.domain
 
         window.map = new google.maps.Map(document.getElementById('gmap'), {
             center: { lat: latlng[0] * 1, lng: latlng[1] * 1 },
@@ -21,7 +22,7 @@ class GoogleMap extends Component {
             // marker
             latlng = item.filter.lat_long.split(',');
             let marker = new google.maps.Marker({
-                icon: this.data.domain +"/themes/jalan-jalan/images/marker.png",
+                icon: domain +"/wp-content/themes/jalan-jalan/images/marker.png",
                 position: new google.maps.LatLng(latlng[0] * 1, latlng[1] * 1),
                 title: item.title,
                 id: item.id
@@ -31,7 +32,7 @@ class GoogleMap extends Component {
             marker.addListener('click', function() {
                 // window.iw.setContent(infowindow_content(item));
                 // window.iw.open(window.map, marker);
-                set_map_state(marker.id);
+                set_map_state(marker.id, map.getZoom());
             });
 
             // create and add label to marker for further use in clusterer
@@ -55,19 +56,19 @@ class GoogleMap extends Component {
         window.mc = new MarkerClusterer(window.map, window.markers, {
             averageCenter: true,
             styles: [{
-                url: this.data.domain +'/themes/jalan-jalan/images/cluster-1.png',
+                url: this.props.domain +'/wp-content/themes/jalan-jalan/images/cluster-1.png',
                 height: 40,
                 width: 35,
                 textColor: '#1b046f',
                 textSize: 16
               }, {
-                url: this.data.domain +'/themes/jalan-jalan/images/cluster-2.png',
+                url: this.props.domain +'/wp-content/themes/jalan-jalan/images/cluster-2.png',
                 height: 50,
                 width: 45,
                 textColor: '#1b046f',
                 textSize: 20
               }, {
-                url: this.data.domain +'/themes/jalan-jalan/images/cluster-3.png',
+                url: this.props.domain +'/wp-content/themes/jalan-jalan/images/cluster-3.png',
                 height: 60,
                 width: 55,
                 textColor: '#1b046f',
@@ -130,17 +131,18 @@ class GoogleMap extends Component {
                 '</a>'+
             '</h5>'+
             '<p>'+
-                item.excerpt
+                item.excerpt+
+                '<a href="'+ this.props.domain +'/'+ this.props.type +'/'+ item.slug +'"> - lihat detail</a>'+
             '</p>'+
         '</div>';
     }
 
-    set_map_state = (id) => {
+    set_map_state = (id, zoom) => {
         this.props.set_map_state(
             id,
             this.props.map_state[1],
             this.props.map_state[2],
-            this.props.map_state[3],
+            zoom,
             true
         )
     }
