@@ -21,7 +21,7 @@
         width: 100%;
 
         .filter-field {
-            margin-bottom: 1px;
+            margin-bottom: 5px;
         }
 
         .filter_group {
@@ -34,6 +34,7 @@
 
         select {
             width: 100%;
+            background-color: #fff;
         }
 
         .info {
@@ -48,8 +49,19 @@
         }
     }
 
+    .filter-info {
+        margin: 15px 0;
+    }
+
     .row_filter {
         margin-bottom: 1px;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.25s ease-in-out;
+    }
+
+    .row_filter.open {
+        max-height: 600px;
     }
 
     .view_type {
@@ -213,6 +225,30 @@
 
 @media screen and (max-width: $screen-sm - 0.05) {
     .filter-listing {
+        .filter {
+            .row_sort {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .search {
+                width: 100%;
+            }
+
+            .sort {
+                order: 3;
+                width: 40%;
+            }
+
+            .view_type {
+                width: 60%;
+            }
+
+            select {
+                font-size: 15px;
+            }
+        }
+
         .tile-container {
             .lead_img {
 
@@ -231,6 +267,16 @@
             flex-direction: row;
             justify-content: flex-start;
             margin-bottom: 20px;
+        }
+
+        .filter_toggle {
+            display: none;
+        }
+
+        .row_filter,
+        .row_filter.open {
+            max-height: none;
+            overflow: visible;
         }
 
         .tile-container {

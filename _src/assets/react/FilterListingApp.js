@@ -84,6 +84,7 @@ class FilterListing extends Component {
         this.state = {
             page: 1,
             view_type: "map", // list|map
+            view_filter: false,
             filter: [],
             sortby: "",
             keyword: "",
@@ -102,6 +103,7 @@ class FilterListing extends Component {
         this.set_map_state = this.set_map_state.bind(this);
         this.toggle_filter = this.toggle_filter.bind(this);
         this.toggle_view = this.toggle_view.bind(this);
+        this.show_filter = this.show_filter.bind(this);
     }
 
     componentWillMount = () => {
@@ -129,6 +131,10 @@ class FilterListing extends Component {
     }
 
     on_select_page = (new_page) => {
+        jQuery('html, body').animate({
+            scrollTop: jQuery(".list-container").offset().top - 70
+        }, 400);
+
         this.setState( (state, props) => {
             return { page: new_page }
         });
@@ -163,6 +169,14 @@ class FilterListing extends Component {
     }
 
     set_map_state = (infowindow_id, center_lat, center_lng, zoom, show_item_list) => {
+        if( ! show_item_list ) {
+            if( jQuery(window).width() <= 768 ) {
+                jQuery('html, body').animate({
+                    scrollTop: jQuery(".map-container").offset().top
+                }, 400);
+            }
+        }
+
         this.setState({
             map_state: [infowindow_id, center_lat, center_lng, zoom, show_item_list]
         })
@@ -197,6 +211,12 @@ class FilterListing extends Component {
         })
     }
 
+    show_filter = () => {
+        this.setState({
+            view_filter: this.state.view_filter === false
+        });
+    }
+
     render_filter = (total) => {
         switch (this.props.type) {
             case 'tempat-wisata':
@@ -218,7 +238,9 @@ class FilterListing extends Component {
                         toggle_view={ this.toggle_view }
                         view_type= { this.state.view_type }
                         dropdown={ this.state.dropdown }
-                        reset_filter={ this.reset_filter } />
+                        reset_filter={ this.reset_filter }
+                        show_filter={ this.show_filter }
+                        view_filter={ this.state.view_filter } />
                 )
                 break;
             case 'bali-hotel':
@@ -240,7 +262,9 @@ class FilterListing extends Component {
                         view_type= { this.state.view_type }
                         toggle_view={ this.toggle_view }
                         dropdown={ this.state.dropdown }
-                        reset_filter={ this.reset_filter } />
+                        reset_filter={ this.reset_filter }
+                        show_filter={ this.show_filter }
+                        view_filter={ this.state.view_filter } />
                 )
                 break;
         }
@@ -374,7 +398,7 @@ class FilterListing extends Component {
         }
 
         // filter here, buat function sesuai filter masing2 aja
-        let i, n = this.state.filter_used.length, filters;
+        let i, n = this.state.filter_used.length, filters, filter_name;
 
         for( i = 0; i < n; i++ ) {
             filters = this.state.filter_used[i].split("|");
@@ -392,7 +416,8 @@ class FilterListing extends Component {
                     break;
                 }
             } else {
-                if( item.filter[filters[0]] === filters[1] ) {
+                filter_name = filters[0] === 'open_day' ? 'day_open' : filters[0];
+                if( item.filter[filter_name] === filters[1] ) {
                     rs.push(item);
                     break;
                 }

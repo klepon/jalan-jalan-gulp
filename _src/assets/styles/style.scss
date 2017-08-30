@@ -65,26 +65,35 @@
     }
 }
 
+.cta-btn-con {
+    flex-wrap: wrap;
+}
+
 .cta-btn {
     background-color: $primary-background-color;
     color: $primary-color;
     border: solid 1px $primary-border-color;
     border-radius: 3px;
-    padding: 0.5em;
+    padding: 0.3em 1em;
     min-width: 100px;
     display: block;
     text-align: center;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    box-shadow: none !important;
 
-    &:hover {
+    &:hover,
+    &:focus {
         background-color: darken($primary-background-color, 6.5%);
-        color: $primary-color;
+        color: $primary-color !important;
+        box-shadow: none !important;
     }
 }
 
 button {
     background: none;
     color: #222;
-    box-shadow: 1px 1px 4px -1px rgba(0,0,0,.3);
+    box-shadow: 1px 1px 4px 0 rgba(0,0,0,.3);
     padding: 10px 20px;
     margin: 0 7px;
 

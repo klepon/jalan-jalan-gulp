@@ -55,16 +55,19 @@ class FilterFormHotel extends Component {
         // console.log(this.props.filter_used);
 
         let icon = this.props.filter_state === 'open' ? 'icon-close' : 'icon-setting',
-            reset = null;
+            reset = null,
+            view_filter = this.props.view_filter ? ' open' : '';
 
         if( this.props.filter_used.length > 0 ) {
-            reset = <strong className="pointer" onClick={ () => this.props.reset_filter() }>reset</strong>
+            reset = <span><strong className="pointer" onClick={ () => this.props.reset_filter() }>reset</strong><span className="filter_toggle"> | </span></span>
         }
 
         return (
             <div className={"filter "+ this.props.filter_state }>
-                <p>{ this.props.total } hotel di Bali { reset }</p>
-                <div className="row row_filter">
+                <p>{ this.props.total } hotel di Bali { reset }
+                    <strong className="filter_toggle pointer" onClick={ () => this.props.show_filter() }>filter</strong>
+                </p>
+                <div className={"row row_filter"+ view_filter}>
                     <Dropdown
                         name="checkin_out"
                         title="Check in / out"

@@ -55,17 +55,19 @@ class FilterFormWisata extends Component {
         // console.log(this.props.filter_used);
 
         let icon = this.props.filter_state === 'open' ? 'icon-close' : 'icon-setting',
-            reset = null;
+            reset = null,
+            view_filter = this.props.view_filter ? ' open' : '';
 
         if( this.props.filter_used.length > 0 ) {
-            reset = <strong className="pointer" onClick={ () => this.props.reset_filter() }>reset</strong>
+            reset = <span><strong className="pointer" onClick={ () => this.props.reset_filter() }>reset</strong><span className="filter_toggle"> | </span></span>
         }
-
 
         return (
             <div className={"filter "+ this.props.filter_state }>
-                <p>{ this.props.total } tempat wisata { reset }</p>
-                <div className="row row_filter">
+                <p className="filter-info">{ this.props.total } tempat wisata { reset }
+                    <strong className="filter_toggle pointer" onClick={ () => this.props.show_filter() }>filter</strong>
+                </p>
+                <div className={"row row_filter"+ view_filter}>
                     <Dropdown
                         name="open_day_hour"
                         title="Operasional"

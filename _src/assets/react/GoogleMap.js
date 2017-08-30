@@ -8,7 +8,8 @@ class GoogleMap extends Component {
         mapLabel,
         marker_clusterer,
         set_map_state = this.set_map_state,
-        domain = this.props.domain
+        domain = this.props.domain,
+        limit_zoom = this.limit_zoom
 
         window.map = new google.maps.Map(document.getElementById('gmap'), {
             center: { lat: latlng[0] * 1, lng: latlng[1] * 1 },
@@ -49,8 +50,9 @@ class GoogleMap extends Component {
 
             // update bound
             bounds.extend({ lat: latlng[0] * 1, lng: latlng[1] * 1 });
-            map.fitBounds(bounds);
         });
+
+        map.fitBounds(bounds);
 
         // init clusterer
         window.mc = new MarkerClusterer(window.map, window.markers, {
@@ -114,8 +116,10 @@ class GoogleMap extends Component {
 
         // Limit the zoom level
         google.maps.event.addListener(map, 'zoom_changed', function() {
-            if (map.getZoom() < 9) map.setZoom(9);
+            limit_zoom();
         });
+
+        limit_zoom();
 
         // console.log(this.props.data);
     }
@@ -132,9 +136,19 @@ class GoogleMap extends Component {
             '</h5>'+
             '<p>'+
                 item.excerpt+
-                '<a href="'+ this.props.domain +'/'+ this.props.type +'/'+ item.slug +'"> - lihat detail</a>'+
+                ' &middot; <a href="'+ this.props.domain +'/'+ this.props.type +'/'+ item.slug +'">lihat detail</a> &raquo;'+
             '</p>'+
         '</div>';
+    }
+
+    limit_zoom = () => {
+        if (map.getZoom() < 9 && jQuery(window).width() <= 768 ) {
+            map.setZoom(9);
+        }
+
+        if (map.getZoom() < 10 && jQuery(window).width() > 768 ) {
+            map.setZoom(10);
+        }
     }
 
     set_map_state = (id, zoom) => {
