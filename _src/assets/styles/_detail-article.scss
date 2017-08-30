@@ -1,4 +1,27 @@
 .aj-cp article {
+    display: flex;
+    flex-direction: column;
+
+    > * {
+        max-width: 100%;
+    }
+
+    .entry-header {
+        order: 1;
+        width: 100%;
+    }
+
+    .entry-content {
+        order: 3;
+    }
+
+    .sidebar {
+        order: 2;
+    }
+
+    .area-listing {
+        display: none;
+    }
 
     .published a {
         color: $dark;
@@ -86,9 +109,8 @@
 
 @media screen and (min-width: $screen-sm) {
     .aj-cp article {
-        display: flex;
         flex-wrap: wrap;
-        flex-direction: row-reverse;
+        flex-direction: row;
         justify-content: space-between;
         align-items: flex-start;
 
@@ -96,8 +118,15 @@
             width: 100%;
         }
 
+        .entry-content {
+            width: calc(100% - #{20em + $gutter-d});
+            margin: 0;
+            order: 2;
+        }
+
         .sidebar {
             width: 20em;
+            order: 3;
         }
 
         .sidebar .adsense {
@@ -105,9 +134,8 @@
             min-height: 100px;
         }
 
-        .entry-content {
-            width: calc(100% - #{20em + $gutter-d});
-            margin: 0;
+        .area-listing {
+            display: block;
         }
     }
 
@@ -165,16 +193,16 @@
 
 @media screen and (min-width: $screen-md) {
     .aj-cp article {
+        .entry-content {
+            width: calc(100% - #{21em + $gutter-d});
+        }
+
         .sidebar {
             width: 21em;
         }
 
         .sidebar .adsense {
             min-height: 280px;
-        }
-
-        .entry-content {
-            width: calc(100% - #{21em + $gutter-d});
         }
     }
 }
