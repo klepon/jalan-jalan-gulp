@@ -133,7 +133,7 @@ class FilterFormHotel extends Component {
                             onClick={ this.props.toggle_view }
                             value='list'
                             current={ this.props.view_type }
-                            title="List"
+                            title="Daftar"
                         />
                         <Button
                             key={1}
