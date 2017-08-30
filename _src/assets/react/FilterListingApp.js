@@ -121,6 +121,13 @@ class FilterListing extends Component {
         });
     }
 
+    reset_filter = () => {
+        this.setState({
+            filter_used: [],
+            filter_action: ""
+        });
+    }
+
     on_select_page = (new_page) => {
         this.setState( (state, props) => {
             return { page: new_page }
@@ -210,7 +217,8 @@ class FilterListing extends Component {
                         toggle_dropdown={ this.toggle_dropdown }
                         toggle_view={ this.toggle_view }
                         view_type= { this.state.view_type }
-                        dropdown={ this.state.dropdown } />
+                        dropdown={ this.state.dropdown }
+                        reset_filter={ this.reset_filter } />
                 )
                 break;
             case 'bali-hotel':
@@ -231,7 +239,8 @@ class FilterListing extends Component {
                         toggle_dropdown={ this.toggle_dropdown }
                         view_type= { this.state.view_type }
                         toggle_view={ this.toggle_view }
-                        dropdown={ this.state.dropdown } />
+                        dropdown={ this.state.dropdown }
+                        reset_filter={ this.reset_filter } />
                 )
                 break;
         }

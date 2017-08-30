@@ -54,27 +54,30 @@ class PanelItemWisata extends Component {
     render () {
         let active = this.props.map_state[0] === this.props.data.id ? " active" : "";
         return (
-            <div className={"list list-"+ this.props.data.id + active } onClick={ () => this.props.set_map_state(
-                this.props.data.id,
-                this.props.map_state[1],
-                this.props.map_state[2],
-                17,
-                false
-            ) }>
-                <div className="anchor">
-                    <Icon icon="icon-pin" />
-                </div>
+            <div>
+                <div className={"list list-"+ this.props.data.id + active } onClick={ () => this.props.set_map_state(
+                    this.props.data.id,
+                    this.props.map_state[1],
+                    this.props.map_state[2],
+                    17,
+                    false
+                ) }>
+                    <div className="anchor">
+                        <Icon icon="icon-pin" />
+                    </div>
 
-                <div className="detail">
-                    <h3>{ this.props.data.title }</h3>
-                    <small>
-                        <span>{ this.get_taxo_by_name('wisata', 'single') }</span> -
-                        <span>{ this.get_taxo_by_name('wisata-bali', 'single') }</span> -
-                        { this.terrain() }
-                    </small>
-                </div>
+                    <div className="detail">
+                        <h3>{ this.props.data.title }</h3>
+                        <small>
+                            <span>{ this.get_taxo_by_name('wisata', 'single') }</span> -
+                            <span>{ this.get_taxo_by_name('wisata-bali', 'single') }</span> -
+                            { this.terrain() }
+                        </small>
+                    </div>
 
-                { this.thumbnail() }
+                    { this.thumbnail() }
+                </div>
+                <a className="mobile-link" href={ this.props.domain +'/'+ this.props.type +'/'+ this.props.data.slug }>Buka detil halaman &raquo;</a>
             </div>
         )
     }

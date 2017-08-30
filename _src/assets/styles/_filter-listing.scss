@@ -1,3 +1,7 @@
+.pointer {
+    cursor: pointer;
+}
+
 .listing-wide {
     max-width: $screen-lg;
 }
@@ -120,15 +124,28 @@
         overflow: auto;
         position: relative;
 
+        .mobile-link {
+            margin-bottom: 10px;
+            padding: 10px;
+            display: block;
+            text-align: right;
+            box-shadow: none;
+            border-bottom: solid 1px #f1f1f1;
+
+            &:hover {
+                box-shadow: none;
+            }
+        }
+
         .list {
             display: flex;
-            border-bottom: solid 1px #f1f1f1;
             padding: 10px 10px 5px 0;
             cursor: pointer;
 
             &.active,
             &:hover {
                 background: #f1f1f1;
+                border-color: #fff;
             }
         }
 
@@ -337,6 +354,14 @@
         .map-list-container {
             flex: 0 0 320px;
             max-height: 500px;
+
+            .mobile-link {
+                display: none;
+            }
+
+            .list {
+                border-bottom: solid 1px #f1f1f1;
+            }
 
             h3 {
                 font-size: 1.1em;

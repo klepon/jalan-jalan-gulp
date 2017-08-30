@@ -54,11 +54,16 @@ class FilterFormHotel extends Component {
         // console.log(this.props.filter);
         // console.log(this.props.filter_used);
 
-        let icon = this.props.filter_state === 'open' ? 'icon-close' : 'icon-setting';
+        let icon = this.props.filter_state === 'open' ? 'icon-close' : 'icon-setting',
+            reset = null;
+
+        if( this.props.filter_used.length > 0 ) {
+            reset = <strong className="pointer" onClick={ () => this.props.reset_filter() }>reset</strong>
+        }
 
         return (
             <div className={"filter "+ this.props.filter_state }>
-                <p>{ this.props.total } hotel di Bali</p>
+                <p>{ this.props.total } hotel di Bali { reset }</p>
                 <div className="row row_filter">
                     <Dropdown
                         name="checkin_out"
