@@ -43,6 +43,10 @@
         overflow: hidden;
         position: relative;
 
+        &.star-n-a svg:nth-child(n+1) {
+            opacity: 0.1;
+        }
+
         &.star-1 svg:nth-child(n+2) {
             opacity: 0.1;
         }
