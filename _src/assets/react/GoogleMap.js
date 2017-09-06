@@ -4,7 +4,6 @@ class GoogleMap extends Component {
     render_map = () => {
         let latlng = [this.props.map_state[1], this.props.map_state[2]],
         bounds = new google.maps.LatLngBounds(),
-        infowindow_content = this.infowindow_content,
         mapLabel,
         marker_clusterer,
         set_map_state = this.set_map_state,
@@ -31,8 +30,6 @@ class GoogleMap extends Component {
 
             // marker listerner show infowindow
             marker.addListener('click', function() {
-                // window.iw.setContent(infowindow_content(item));
-                // window.iw.open(window.map, marker);
                 set_map_state(marker.id, map.getZoom());
             });
 
@@ -161,8 +158,19 @@ class GoogleMap extends Component {
         return null;
     }
 
-    infowindow_content = (item) => {
+    infowindow_content = () => {
         // console.log(item);
+        let i, item = null;
+
+        for( i in this.props.data ) {
+            if( this.props.data[i].id === this.props.map_state[0] ) {
+                item = this.props.data[i];
+            }
+        }
+
+        if( item === null ) {
+            return "Ups..<br />Data tidak ditemukan.";
+        }
 
         return '<div class="info-window-container">'+
             '<a class="preview" href="'+ this.props.domain +'/'+ this.props.type +'/'+ item.slug +'">'+
@@ -218,6 +226,7 @@ class GoogleMap extends Component {
         if( prevProps.data.length != this.props.data.length ) {
             this.render_map();
         }
+
         // console.log(this.props.map_state);
 
         if( prevProps.map_state != this.props.map_state ) {
@@ -232,7 +241,7 @@ class GoogleMap extends Component {
 
                         window.iw.close();
                         window.iw = new google.maps.InfoWindow();
-                        window.iw.setContent(this.infowindow_content(this.props.data[i]));
+                        window.iw.setContent(this.infowindow_content());
                         window.iw.open(window.map, window.markers[i]);
 
                         if( this.props.map_state[4] ) {
