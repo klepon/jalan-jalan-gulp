@@ -11,7 +11,7 @@ jQuery(function(){
     if( $appDom.length < 1 ) {
         return;
     }
-    
+
     ReactDOM.render(
         <FilterListingApp
         data={ JSON.parse( $appData.text().trim() ) }

@@ -124,7 +124,46 @@ class GoogleMap extends Component {
         // console.log(this.props.data);
     }
 
+    open_detail = (item) => {
+        switch ( this.props.type ) {
+            case 'tempat-wisata':
+                return "<span>"+
+                    this.props.meta_key_val.open_day[item.filter.day_open] +" "+
+                    item.filter.open_hours +" - "+
+                    item.filter.closed_hours +
+                    "</span>";
+                break;
+            case 'bali-hotel':
+                return "<span>Check in - Out: "+
+                    item.filter.open_hours +" - "+
+                    item.filter.closed_hours +
+                    "</span>"
+                break;
+        }
+
+        return null;
+    }
+
+    get_price = (item) => {
+        switch ( this.props.type ) {
+            case 'tempat-wisata':
+                return "<span>Tiket \u00b1 "+
+                    this.props.meta_key_val.price_range[item.filter.price_range] +
+                    "</span>";
+                break;
+            case 'bali-hotel':
+                return "<span>Kamar \u00b1 "+
+                    this.props.meta_key_val.hotel_price_range[item.filter.price_range] +
+                    "</span>"
+                break;
+        }
+
+        return null;
+    }
+
     infowindow_content = (item) => {
+        // console.log(item);
+
         return '<div class="info-window-container">'+
             '<a class="preview" href="'+ this.props.domain +'/'+ this.props.type +'/'+ item.slug +'">'+
                 '<img src="'+ this.props.domain +'/wp-content/uploads/'+ item.thumb +'" />'+
@@ -135,7 +174,9 @@ class GoogleMap extends Component {
                 '</a>'+
             '</h5>'+
             '<p>'+
-                item.excerpt+
+                this.open_detail(item) +
+                '<br />'+ this.get_price(item) +
+                '<br /><br />'+ item.excerpt+
                 ' &middot; <a href="'+ this.props.domain +'/'+ this.props.type +'/'+ item.slug +'">lihat detail</a> &raquo;'+
             '</p>'+
         '</div>';

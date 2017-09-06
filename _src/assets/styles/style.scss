@@ -73,6 +73,7 @@
     flex-wrap: wrap;
 }
 
+.btn,
 .cta-btn {
     background-color: $primary-background-color;
     color: $primary-color;
@@ -85,12 +86,51 @@
     margin-right: 10px;
     margin-bottom: 10px;
     box-shadow: none !important;
+    cursor: pointer;
 
     &:hover,
     &:focus {
         background-color: darken($primary-background-color, 6.5%);
         color: $primary-color !important;
         box-shadow: none !important;
+    }
+}
+
+.btn {
+    display: inline-block;
+
+    &:hover,
+    &:focus {
+        opacity: 0.8;
+        box-shadow: $box-shadow !important;
+    }
+
+    &.light-blue {
+        color: $info-solid-color;
+        background-color: $info-solid-background-color;
+        border-color: $info-solid-border-color;
+    }
+
+    &.btn-icon {
+        padding: 0.3em 0.5em 0.3em 1em;
+    }
+
+    &.btn-small-icon {
+        padding: 3px 0 3px 0.5em;
+        font-size: 80%;
+        font-weight: normal;
+    }
+
+    .icon {
+        width: 1.8em;
+        height: 1.8em;
+        margin-left: 0.5em;
+    }
+
+    &.btn-small-icon .icon {
+        width: 1.5em;
+        height: 1.5em;
+        margin-left: 0;
     }
 }
 

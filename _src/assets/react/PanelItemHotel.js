@@ -77,7 +77,7 @@ class PanelItemHotel extends Component {
 
     open_detail = () => {
         return (
-            <span>In - Out: { this.props.meta_key_val.open_day[this.props.data.filter.day_open] } { this.props.data.filter.open_hours } - { this.props.data.filter.closed_hours }</span>
+            <span>In - Out: { this.props.data.filter.open_hours } - { this.props.data.filter.closed_hours }</span>
         )
     }
 

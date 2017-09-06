@@ -18,14 +18,14 @@ class FilterListing extends Component {
             },
 
             park_distant: {
-                'n-a': 'jarak ?',
-                'jauh': "jauh",
-                'dekat': "dekat",
-                'sedang': "agak jauh"
+                'n-a': 'jarak parkir ?',
+                'jauh': "parkir jauh",
+                'dekat': "parkir dekat",
+                'sedang': "parkir agak jauh"
             },
 
             park_available: {
-                'n-a': 'Parkir ?',
+                'n-a': 'Ada parkir ?',
                 'susah-parkir': "Susah parkir",
                 'susah-mobil': "Mobil susah parkir",
                 'bisa-mobil': "Parkir mobil ada",
@@ -57,7 +57,7 @@ class FilterListing extends Component {
             },
 
             star: {
-                'n-a': '-',
+                'n-a': 'Tanpa bintang',
                 '1': 'Bintang 1',
                 '2': 'Bintang 2',
                 '3': 'Bintang 3',
@@ -115,6 +115,24 @@ class FilterListing extends Component {
                 this.collect_filter_hotel();
                 break;
         }
+    }
+
+    componentDidMount = () => {
+        document.body.addEventListener('click', this.on_click_body);
+    }
+
+    componentWillUnmount = () => {
+        document.body.removeEventListener('click', this.on_click_body);
+    }
+
+    on_click_body = (e) => {
+        let el = jQuery(e.target);
+
+        if( el.hasClass('.toggle') || el.closest('.dropdown.expanse').length > 0 ) {
+            return;
+        }
+
+        this.toggle_dropdown('null');
     }
 
     reset_page = () => {
@@ -301,6 +319,7 @@ class FilterListing extends Component {
                         data={ items }
                         domain={ this.props.domain }
                         type={ this.props.type }
+                        meta_key_val={ this.get_meta_key_val() }
                         map_state={ this.state.map_state }
                         set_map_state={ this.set_map_state } />
 
@@ -355,9 +374,9 @@ class FilterListing extends Component {
     }
 
     sort_data = (data) => {
-        let sortby;
+        let sortby = this.state.sortby;
 
-        switch (this.state.sortby) {
+        switch (sortby) {
             case 'name':
                 data.sort(function(a, b){
                     if (a.title < b.title)
@@ -374,15 +393,25 @@ class FilterListing extends Component {
                 break;
             case 'open_hours':
             case 'closed_hours':
-                sortby = this.state.sortby;
                 data.sort(function(a, b){
                     return new Date('1970/01/01 ' + a.filter[sortby]) - new Date('1970/01/01 ' + b.filter[sortby]);
                 });
                 break;
             case 'price_range':
-            case 'star':
-                sortby = this.state.sortby;
                 data.sort(function(a, b){
+                    return a.filter[sortby] - b.filter[sortby];
+                });
+                break;
+            case 'star':
+                data.sort(function(a, b){
+                    if (a.filter[sortby] === 'n-a') {
+                        return -1;
+                    }
+
+                    if (b.filter[sortby] === 'n-a') {
+                        return 1;
+                    }
+
                     return a.filter[sortby] - b.filter[sortby];
                 });
                 break;
@@ -401,6 +430,12 @@ class FilterListing extends Component {
         let i, n = this.state.filter_used.length, filters, filter_name;
 
         for( i = 0; i < n; i++ ) {
+            // react bug for hight speed click
+            if( this.state.filter_used[i] === undefined ) {
+                rs.push(item);
+                break;
+            }
+
             filters = this.state.filter_used[i].split("|");
 
             if( filters[0] === 'status' ) {

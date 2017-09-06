@@ -4,6 +4,7 @@ import Input from './Input';
 import Checkbox from './Checkbox';
 import Dropdown from './Dropdown';
 import Button from './Button';
+import Icon from './Icon';
 
 class FilterFormHotel extends Component {
     render_filter = (filter_params, label_params, title) => {
@@ -50,6 +51,65 @@ class FilterFormHotel extends Component {
         )
     }
 
+    render_active = () => {
+        // console.log(this.props.filter_used);
+        // console.log(this.props.meta_key_val);
+
+        if( this.props.filter_used.length < 1 ) {
+            return null;
+        }
+
+        let parts,
+            label_text,
+            label,
+            filter_used = this.props.filter_used,
+            filter = this.props.filter,
+            onClick = this.props.on_filter_check_change,
+            labels = this.props.meta_key_val,
+            pair = {
+                'open_hours': 'buka jam ',
+                'closed_hours': 'tutup jam ',
+                'price_range': 'hotel_price_range',
+                'star': 'star',
+                'area': ['dinamyc_filter', 'area'],
+                'location': ['dinamyc_filter', 'location']
+            }
+
+        return (
+            <div>Filter:&nbsp;&nbsp;
+                {filter_used.map(function( filter_item ){
+                    // react bug for hight speed click
+                    if( filter_item === undefined ) {
+                        return null;
+                    }
+
+                    parts = filter_item.split('|');
+                    label = typeof(pair[parts[0]]) === "string"
+                        ? labels[pair[parts[0]]]
+                        : labels[pair[parts[0]][0]][pair[parts[0]][1]];
+
+                    return filter[parts[0]].map(function( item, index ){
+                        label_text = parts[0] === 'open_hours' || parts[0] === 'closed_hours'
+                            ? pair[parts[0]] + item
+                            : label[item];
+
+                        if( item === parts[1] ) {
+                            return (
+                                <button className="btn btn-small-icon"
+                                    key={ index }
+                                    name={ parts[0] +"|"+ item }
+                                    onClick={ (e) => onClick(e) }>
+                                    { label_text }
+                                    <Icon icon="icon-close" />
+                                </button>
+                            )
+                        }
+                    })
+                })}
+            </div>
+        );
+    }
+
     render () {
         // console.log(this.props.filter);
         // console.log(this.props.filter_used);
@@ -67,6 +127,9 @@ class FilterFormHotel extends Component {
                 <p>{ this.props.total } hotel di Bali { reset }
                     <strong className="filter_toggle pointer" onClick={ () => this.props.show_filter() }>filter</strong>
                 </p>
+
+                { this.render_active() }
+
                 <div className={"row row_filter"+ view_filter}>
                     <Dropdown
                         name="checkin_out"
@@ -121,7 +184,7 @@ class FilterFormHotel extends Component {
                                 ['', 'Urutkan dengan', true],
                                 ['star', 'Bintang'],
                                 ['price_range', 'Termurah'],
-                                ['name', 'Nama tempat'],
+                                ['name', 'Nama hotel/villa'],
                                 ['open_hours', 'Check in'],
                                 ['closed_hours', 'Check out'],
                             ]} /> }
