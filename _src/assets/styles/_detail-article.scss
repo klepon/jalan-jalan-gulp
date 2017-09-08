@@ -189,6 +189,21 @@
             }
         }
     }
+
+    .aj-cp #secondary {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        &::before,
+        &::after {
+            display: none;
+        }
+
+        .widget:not(.aj_related_post) {
+            width: calc(50% - 10px);
+        }
+    }
 }
 
 @media screen and (min-width: $screen-md) {
