@@ -60,7 +60,7 @@ class PanelItemWisata extends Component {
                     this.props.data.id,
                     this.props.map_state[1],
                     this.props.map_state[2],
-                    17,
+                    19,
                     false
                 ) }>
                     <div className="anchor">
