@@ -1,30 +1,30 @@
 // source files
-themeName = 'jalan-jalan',
-localWpAddress = "klepon/_wp-theme-builder/",
+themeName 		= "jalan-jalan",
+localWpAddress 	= "klepon/_wp-theme-builder/",
 
 // ========= leave below code alone =============
 src = {
-	styles 			:	['_src/assets/styles/*.scss'],
-	adminStyles :	['_src/assets/admin-styles/*.scss'],
-	react	 			:	['_src/assets/react/*.js'],
-	reactWatch	:	['_src/assets/scripts/*.js', '_src/assets/react/*.js', '_src/assets/react/**/*.js'],
+	styles 		: ['_src/assets/styles/*.scss'],
+	adminStyles : ['_src/assets/admin-styles/*.scss'],
+	react	 	: ['_src/assets/react/*.js'],
+	reactWatch	: ['_src/assets/scripts/*.js', '_src/assets/react/*.js', '_src/assets/react/**/*.js'],
 	reactEntry	: './_src/assets/react/index.js'
 },
 
 // dist files
 dist = {
-	main			: 'dist',
+	main		: 'dist',
 	styles		: 'dist/assets/styles/',
-	adminStyle: 'dist/assets/styles/',
+	adminStyle	: 'dist/assets/styles/',
 	scripts		: 'dist/assets/js/',
 	wpAssets	: '../themes/'+ themeName +'/assets/'
 },
 
 // files name
 fileName = {
-	style	: 'style.css',
+	style		: 'style.css',
 	adminStyle	: 'admin-style.css',
-	scripts: 'script.js'
+	scripts		: 'script.js'
 };
 
 // include required plugin
