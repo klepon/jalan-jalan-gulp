@@ -42,49 +42,36 @@ const	clean = require('gulp-clean'),
 	webpack = require("webpack"),
 	path = require('path');
 
-// production build
-gulp.task('build', ['clean-build'], function(){
-	return gulp.start('rebuild');
-});
+// compile styles
+gulp.task('styles', function(){
+	let handleError = function (error) {
+		notify().write("ERROR: Compile styles\n");
+		console.log(error.message);
+		this.emit('end');
+	},
 
-gulp.task('rebuild', ['styles', 'admin-styles', 'webpack-build'], function(){
-	return gulp.start('copy-wp-assets');
-});
+	supported = [
+    'last 2 versions',
+    'safari >= 8',
+    'ie >= 10',
+    'ff >= 20',
+    'ios 6',
+    'android 4'
+	];
 
-// default is dev env
-gulp.task('default', ['styles', 'admin-styles', 'webpack-stream'], function(){
-	return gulp.start('copy-wp-assets');
-});
-
-gulp.task('clean-build', function(){
-	return gulp.src([dist.main, dist.wpAssets], {read: false})
-		.pipe(clean({force: true}));
-});
-
-gulp.task('copy-wp-assets', ['copy-assets-style', 'copy-assets-react'], function(){
-	return gulp.start('serve-and-watch');
-});
-
-gulp.task('serve-and-watch', ['server'], function(){
-	gulpWatch(dist.scripts +'*.js', function() {
-		gulp.start('copy-assets-react');
-	});
-
-	gulpWatch(dist.styles +'*.css', function() {
-			gulp.start('copy-assets-style');
-	});
-
-	gulpWatch(src.styles, function() {
-		gulp.start('styles');
-	});
-
-	gulpWatch(src.adminStyles, function() {
-		gulp.start('admin-styles');
-	});
-
-	gulpWatch(src.reactWatch, function() {
-		gulp.start('webpack-stream');
-	});
+	return gulp.src(src.styles)
+    .pipe(sass({outputStyle: 'compressed'})
+		.on('error', sass.logError))
+    .on('error', handleError)
+		.pipe(cmq())
+    .pipe(cssnano({
+			// sourcemap: true,
+    	safe: true,
+    	autoprefixer: {browsers: supported, add: true},
+      discardComments: {removeAll: true}
+    }))
+    .pipe(concat(fileName.style))
+    .pipe(gulp.dest(dist.styles));;
 });
 
 // build react for production
@@ -135,38 +122,6 @@ gulp.task('webpack-stream', function(){
 			devtool: 'source-map'
 		} ))
 	  .pipe(gulp.dest(dist.scripts));
-});
-
-// compile styles
-gulp.task('styles', function(){
-	let handleError = function (error) {
-		notify().write("ERROR: Compile styles\n");
-		console.log(error.message);
-		this.emit('end');
-	},
-
-	supported = [
-    'last 2 versions',
-    'safari >= 8',
-    'ie >= 10',
-    'ff >= 20',
-    'ios 6',
-    'android 4'
-	];
-
-	return gulp.src(src.styles)
-    .pipe(sass({outputStyle: 'compressed'})
-		.on('error', sass.logError))
-    .on('error', handleError)
-		.pipe(cmq())
-    .pipe(cssnano({
-			// sourcemap: true,
-    	safe: true,
-    	autoprefixer: {browsers: supported, add: true},
-      discardComments: {removeAll: true}
-    }))
-    .pipe(concat(fileName.style))
-    .pipe(gulp.dest(dist.styles));;
 });
 
 // compile admin styles
@@ -226,3 +181,34 @@ gulp.task("server", function(){
 
 	gulpWatch(dist.wpAssets +"**/*.js").on('change', browserSync.reload);
 });
+
+gulp.task('watch:assets', function(){
+	gulpWatch(src.styles, gulp.series('styles', 'copy-assets-style'));
+	gulpWatch(src.adminStyles, gulp.series('admin-styles', 'copy-assets-style'));
+	gulpWatch(src.reactWatch, gulp.series('webpack-stream', 'copy-assets-react'));
+});
+
+gulp.task('serve-and-watch', gulp.parallel('server', 'watch:assets'));
+
+gulp.task('clean-build', function(){
+	return gulp.src([dist.main, dist.wpAssets], {read: false})
+		.pipe(clean({force: true}));
+});
+
+gulp.task('copy-wp-assets', gulp.series('copy-assets-style', 'copy-assets-react', 'serve-and-watch', function(done){
+	done();
+}));
+
+gulp.task('rebuild', gulp.series('styles', 'admin-styles', 'webpack-build', 'copy-wp-assets', function(done){
+	done();
+}));
+
+// production build
+gulp.task('build', gulp.series('clean-build', 'rebuild', function(done){
+	done();
+}));
+
+// default is dev env
+gulp.task('default', gulp.series('styles', 'admin-styles', 'webpack-stream', 'copy-wp-assets', function(done){
+	done();
+}));
