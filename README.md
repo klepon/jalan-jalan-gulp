@@ -1,5 +1,5 @@
-node 6.4
-npm  v3.10.3
+node v10.23.2
+npm  v7.5.3
 
 # precompile for wp theme, support scss, js and react
 1. create wp theme as normal

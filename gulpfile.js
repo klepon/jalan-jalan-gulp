@@ -77,25 +77,17 @@ gulp.task('styles', function(){
 // build react for production
 gulp.task("webpack-build", function(callback) {
 	let myConfig = {
-		module : {
-			loaders: [
+		module: {
+			rules: [
 				{ test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ }
-			]
+			],
 		},
+		mode: 'production',
 		output: {
 			path: path.resolve(dist.scripts),
 			filename: fileName.scripts
 		},
 		entry: src.reactEntry,
-		plugins: [
-			new webpack.DefinePlugin({
-				'process.env': {
-					NODE_ENV: JSON.stringify('production')
-				}
-			}),
-			new webpack.optimize.UglifyJsPlugin(),
-			new webpack.optimize.DedupePlugin()
-		]
 	}
 
 	// run webpack
@@ -110,18 +102,18 @@ gulp.task("webpack-build", function(callback) {
 // compile react
 gulp.task('webpack-stream', function(){
 	return gulp.src(src.react)
-	  .pipe(webpackStream( {
-			module : {
-		    loaders: [
-		      { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ }
-		    ]
-		  },
-			output: {
-		    filename: fileName.scripts
-		  },
-			devtool: 'source-map'
-		} ))
-	  .pipe(gulp.dest(dist.scripts));
+		.pipe(webpackStream({
+			// watch: true,
+			module: {
+			  rules: [
+				{ test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ }
+			  ],
+			},
+			output: { filename: fileName.scripts },
+			devtool: 'source-map',
+			mode: 'development',
+		  }))
+		.pipe(gulp.dest(dist.scripts));
 });
 
 // compile admin styles
